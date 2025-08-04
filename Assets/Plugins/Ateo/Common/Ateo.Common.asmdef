@@ -1,0 +1,23 @@
+{
+    "name": "Ateo.Common",
+    "rootNamespace": "",
+    "references": [
+        "Ateo.Events",
+        "Doozy",
+        "DOTween.Modules",
+        "Newtonsoft.Json.UnityConverters",
+        "Newtonsoft.Json.UnityConverters.Addressables",
+        "UniTask",
+        "UnityEngine.UI",
+        "Unity.TextMeshPro"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
