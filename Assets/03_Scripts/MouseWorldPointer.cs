@@ -42,11 +42,15 @@ namespace Moreno.SewingGame
 
 		public Vector3 CurrentPosition => _currentPosition;
 
+		public Vector3 MousePressedStartWorldPosition => _mousePressedStartWorldPosition;
+
 		public bool MousePressed => _mousePressed;
 
 		#endregion
 
 		#region Delegates & Events
+
+		public static  event Action<GameObject> OnObjectClicked;
 
 		#endregion
 
@@ -55,6 +59,12 @@ namespace Moreno.SewingGame
 		private void Update()
 		{
 			TryDetectMouseInput();
+		}
+
+		public override void ResetStatics()
+		{
+			OnObjectClicked = null;
+			base.ResetStatics();
 		}
 
 		#endregion
@@ -98,6 +108,7 @@ namespace Moreno.SewingGame
 					{
 						//obstacle clicked
 					}
+					OnObjectClicked?.Invoke(_currentInteractionObject);
 				}
 
 			}
