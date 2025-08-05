@@ -26,6 +26,7 @@ namespace Moreno.SewingGame
 		private Vector3 _mousePressedStartWorldPosition;
 		private Vector3 _currentPosition, _previousPosition;
 		private bool _mousePressed = true;
+		private GameObject _currentInteractionObject;
 		#endregion
 
 		#region Properties
@@ -81,6 +82,7 @@ namespace Moreno.SewingGame
 			{
 				_currentPosition = hit.point;
 				_pointer.position = _currentPosition;
+				_currentInteractionObject = hit.collider.gameObject;
 				
 				if (Input.GetMouseButtonDown(0))
 				{
