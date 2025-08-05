@@ -4,6 +4,7 @@ using Ateo.Extensions;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Serialization;
 
 namespace Moreno.SewingGame
 {
@@ -12,32 +13,50 @@ namespace Moreno.SewingGame
 		#region private Serialized Variables
 
 		[SerializeField, Required]
+		[BoxGroup("Gameplay")]
 		private Transform _fabricParent;
-
 		[SerializeField, Required]
+		[BoxGroup("Gameplay")]
 		private Transform _rotationCenter;
-		
-		[SerializeField, Required]
-		private AnimationBehaviour _footDownAnimationBehaviour;
-		[SerializeField, Required]
-		private AnimationBehaviour _footUpAnimationBehaviour;
-		[SerializeField, Required]
-		private Transform _needleTransform;
 		[SerializeField]
-		private Vector2 _needleTransformMinMaxY;
-
-		[SerializeField]
+		[BoxGroup("Gameplay")]
 		private float _maxSpeed = 1f;
 		[SerializeField]
+		[BoxGroup("Gameplay")]
 		private float _rotationSpeed = 1f;
-
 		[SerializeField]
-		private float _needleSpeed = 30f;
-		
-		[SerializeField]
+		[BoxGroup("Gameplay")]
 		private AnimationCurve _accelerationCurve = new AnimationCurve(new []{new Keyframe(0,0), new Keyframe(1,1)});
 		[SerializeField]
+		[BoxGroup("Gameplay")]
 		private AnimationCurve _decelerationCurve = new AnimationCurve(new []{new Keyframe(0,1), new Keyframe(1,0)});
+		
+		[SerializeField, Required]
+		[BoxGroup("Foot")]
+		private AnimationBehaviour _footDownAnimationBehaviour;
+		[SerializeField, Required]
+		[BoxGroup("Foot")]
+		private AnimationBehaviour _footUpAnimationBehaviour;
+		[SerializeField, Required]
+		[BoxGroup("Needle")]
+		private Transform _needleTransform;
+		[SerializeField]
+		[BoxGroup("Needle")]
+		private Vector2 _needleTransformMinMaxY;
+		[SerializeField]
+		[BoxGroup("Needle")]
+		private float _needleSpeed = 30f;
+
+		[SerializeField, Required]
+		[BoxGroup("Thread")]
+		private Transform _threadHolderTransform;
+		[FormerlySerializedAs("_threadHolderAnimationoffset"),SerializeField]
+		[BoxGroup("Thread")]
+		private float _threadHolderAnimationOffset = 0.1f;
+		[SerializeField]
+		[BoxGroup("Thread")]
+		private Vector2 _threadHolderTransformMinMaxY;
+		
 
 		
 		#endregion
@@ -113,6 +132,7 @@ namespace Moreno.SewingGame
 			EvaluateCurrentSpeed(gasDown);
 			MoveFabricForward();
 			AnimateNeedle();
+			AnimateThreadHolder();
 			
 			if(!gasDown) return;
 			if(MouseWorldPointer.Instance == null) return;
@@ -144,14 +164,30 @@ namespace Moreno.SewingGame
 				: 0;
 		}
 
+		private float GetNormalizedSinValue(float time)
+		{
+			float sinHeldTime = Mathf.Sin(time);
+			return (sinHeldTime * 0.5f) + 0.5f;
+		}
+
 		private void AnimateNeedle()
 		{
-			float sinHeldTime = Mathf.Sin(_needleAnimationTime);
-			float normalizedHeldTime = (sinHeldTime * 0.5f) + 0.5f;
-			var vector3 = _needleTransform.localPosition;
-			float y = Mathf.Lerp(_needleTransformMinMaxY.x, _needleTransformMinMaxY.y, normalizedHeldTime);
+			AnimateBetweenPoints(_needleAnimationTime,_needleTransform,_needleTransformMinMaxY);
+		}
+
+		private void AnimateThreadHolder()
+		{
+			float time = _needleAnimationTime + _threadHolderAnimationOffset;
+			AnimateBetweenPoints(time, _threadHolderTransform, _threadHolderTransformMinMaxY);
+		}
+
+		private void AnimateBetweenPoints(float time, Transform target, Vector2 localYBounds)
+		{
+			float normalizedHeldTime = GetNormalizedSinValue(time);
+			var vector3 = target.localPosition;
+			float y = Mathf.Lerp(localYBounds.x, localYBounds.y, normalizedHeldTime);
 			vector3.y = y;
-			_needleTransform.localPosition = vector3;
+			target.localPosition = vector3;
 		}
 
 		private void ToggleFootState()

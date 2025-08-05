@@ -316,13 +316,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _fabricParent: {fileID: 2415676627725036491}
   _rotationCenter: {fileID: 8814031644354071142}
-  _footDownAnimationBehaviour: {fileID: 1863895180319037094}
-  _footUpAnimationBehaviour: {fileID: 3869797529291300127}
-  _needleTransform: {fileID: 1722016143532552132}
-  _needleTransformMinMaxY: {x: 0.2102, y: 0.2842}
   _maxSpeed: 0.1
   _rotationSpeed: 5
-  _needleSpeed: 80
   _accelerationCurve:
     serializedVersion: 2
     m_Curve:
@@ -389,6 +384,14 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  _footDownAnimationBehaviour: {fileID: 1863895180319037094}
+  _footUpAnimationBehaviour: {fileID: 3869797529291300127}
+  _needleTransform: {fileID: 1722016143532552132}
+  _needleTransformMinMaxY: {x: 0.2102, y: 0.2842}
+  _needleSpeed: 80
+  _threadHolderTransform: {fileID: 1965832441980838850}
+  _threadHolderAnimationOffset: 0.1
+  _threadHolderTransformMinMaxY: {x: 0.5036, y: 0.60697}
 --- !u!1 &8629282395433115535
 GameObject:
   m_ObjectHideFlags: 0
@@ -587,6 +590,11 @@ GameObject:
 --- !u!4 &1722016143532552132 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7183997172675430148, guid: 2a75f18a92db335479580437f7818d93, type: 3}
+  m_PrefabInstance: {fileID: 8383305376132769984}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &1965832441980838850 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -1216128157209277694, guid: 2a75f18a92db335479580437f7818d93, type: 3}
   m_PrefabInstance: {fileID: 8383305376132769984}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &4783932054401785044 stripped
