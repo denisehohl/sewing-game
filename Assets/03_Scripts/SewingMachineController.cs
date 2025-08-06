@@ -5,6 +5,7 @@ using Ateo.Animation;
 using Ateo.Common;
 using FMODUnity;
 using Moreno.SewingGame.Audio;
+using Moreno.SewingGame.Path;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -71,6 +72,9 @@ namespace Moreno.SewingGame
 		[SerializeField]
 		[BoxGroup("Needle")]
 		private float _needleSpeed = 30f;
+		[SerializeField]
+		[BoxGroup("Needle")]
+		private float _minNeedleAnimationTimeStep = 0.5f;
 
 		[SerializeField, Required]
 		[BoxGroup("Thread")]
@@ -81,6 +85,11 @@ namespace Moreno.SewingGame
 		[SerializeField]
 		[BoxGroup("Thread")]
 		private Vector2 _threadHolderTransformMinMaxY;
+
+		[SerializeField]
+		[BoxGroup("Path")]
+		private PathEvaluater _pathEvaluator;
+		
 		
 		#endregion
 
@@ -95,6 +104,12 @@ namespace Moreno.SewingGame
 		private bool _footDownState;
 		private float _previousNormalizedNeedleAnimationTime;
 		private bool _broken = false;
+		private float _lastNeedleStitchTime;
+		private Vector3 _fabricStartPosition;
+		
+		private List<KeyCode> _possiblePowerKeys = new List<KeyCode>() {KeyCode.Q, KeyCode.W, KeyCode.E};
+
+		private List<KeyCode> _pressedKeys = new List<KeyCode>();
 
 		#endregion
 
@@ -111,6 +126,7 @@ namespace Moreno.SewingGame
 		protected override void OnStart()
 		{
 			_todoMessage.SetActive(false);
+			_fabricStartPosition = _fabricParent.position;
 		}
 
 		private void Update()
@@ -121,6 +137,12 @@ namespace Moreno.SewingGame
 		#endregion
 
 		#region Public Methods
+
+		public void PrepareLevel(LevelSetting level)
+		{
+			ResetMachine();
+			_pathEvaluator.SetPath(level.PathData);
+		}
 
 		public void BreakMachine()
 		{
@@ -144,6 +166,9 @@ namespace Moreno.SewingGame
 		public void ResetMachine()
 		{
 			SetFootState(false);
+			_fabricParent.position = _fabricStartPosition;
+			_fabricParent.rotation = Quaternion.identity;
+			_pathEvaluator.ResetValues();
 		}
 
 		public void StopMachine()
@@ -160,10 +185,6 @@ namespace Moreno.SewingGame
 		#endregion
 
 		#region Private Methods
-
-		private List<KeyCode> _possiblePowerKeys = new List<KeyCode>() {KeyCode.Q, KeyCode.W, KeyCode.E};
-
-		private List<KeyCode> _pressedKeys = new List<KeyCode>();
 
 		private bool GetPowerKeys()
 		{
@@ -216,7 +237,7 @@ namespace Moreno.SewingGame
 			EvaluateCurrentSpeed(gasDown);
 			if (gasDown)
 			{
-				_needleAnimationTime += _needleSpeed * _currentSpeed * Time.deltaTime;
+				_needleAnimationTime += Mathf.Abs(_needleSpeed * _currentSpeed) * Time.deltaTime;
 			}
 			MoveFabricForward();
 			AnimateNeedle();
@@ -265,7 +286,14 @@ namespace Moreno.SewingGame
 			AnimateBetweenPoints(_needleAnimationTime,_needleTransform,_needleTransformMinMaxY, out var normalized);
 			if (Mathf.Abs(_previousNormalizedNeedleAnimationTime - normalized) > 0.001f)
 			{
-				if(normalized <= 0.01f) _needle.CheckIfMouseIsOverHurtable();
+				if (normalized <= 0.01f)
+				{
+					if (_needleAnimationTime - _minNeedleAnimationTimeStep > _lastNeedleStitchTime)
+					{
+						_lastNeedleStitchTime = _needleAnimationTime;
+						OnNeedleStitch();
+					}
+				}
 			}
 			_previousNormalizedNeedleAnimationTime = normalized;
 		}
@@ -327,6 +355,12 @@ namespace Moreno.SewingGame
 		private void UpdateAudioSpeed()
 		{
 			_sewingMachineAudio.SetSpeed(_currentSpeed);
+		}
+		
+		private void OnNeedleStitch()
+		{
+			_needle.CheckIfMouseIsOverHurtable();
+			_pathEvaluator.CheckWorldPointPathAccuracy(_rotationCenter.transform.position);
 		}
 
 		#endregion

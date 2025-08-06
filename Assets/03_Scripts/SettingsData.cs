@@ -3,7 +3,7 @@ using UnityEngine.Serialization;
 
 namespace Moreno.SewingGame
 {
-	[CreateAssetMenu(fileName = "Settings Data", menuName = "Create SettingsData", order = 0)]
+	[CreateAssetMenu(fileName = "Settings Data", menuName = "Sewing/Create SettingsData", order = 0)]
 	public class SettingsData : ScriptableObject
 	{
 		[SerializeField]

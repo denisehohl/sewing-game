@@ -1,7 +1,9 @@
+using Moreno.SewingGame.Path;
 using UnityEngine;
 
 namespace Moreno.SewingGame
 {
+	[CreateAssetMenu(fileName = "Level Setting", menuName = "Sewing/Create Level Setting")]
 	public class LevelSetting : ScriptableObject
 	{
 		[SerializeField]
@@ -14,6 +16,8 @@ namespace Moreno.SewingGame
 		private bool _canPinsFlip = false;
 		[SerializeField]
 		private float _pinRandomRotationRange;
+		[SerializeField]
+		private PathData _pathData;
 
 		public float MachineDirectionRange => _machineDirectionRange;
 
@@ -24,5 +28,7 @@ namespace Moreno.SewingGame
 		public bool CanPinsFlip => _canPinsFlip;
 
 		public float PinRandomRotationRange => _pinRandomRotationRange;
+
+		public PathData PathData => _pathData;
 	}
 }

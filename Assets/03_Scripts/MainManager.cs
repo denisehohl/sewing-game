@@ -9,6 +9,8 @@ namespace Moreno.SewingGame
 
 		[SerializeField]
 		private SettingsData _currentSettings;
+		[SerializeField]
+		private LevelSetting _levelToStart;
 
 		#endregion
 
@@ -28,9 +30,19 @@ namespace Moreno.SewingGame
 
 		#region Monobehaviour Callbacks
 
+		protected override void OnStart()
+		{
+			StartLevel(_levelToStart);
+		}
+
 		#endregion
 
 		#region Public Methods
+
+		public void StartLevel(LevelSetting level)
+		{
+			SewingMachineController.Instance.PrepareLevel(level);
+		}
 
 		#endregion
 
