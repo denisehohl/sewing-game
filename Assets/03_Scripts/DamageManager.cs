@@ -29,7 +29,8 @@ namespace Moreno.SewingGame
 
 		public void CauseDamage(Vector3 position,float damage, float intensity)
 		{
-			
+			DebugExtension.DrawMarker(position,intensity,Color.red,depthTest: false);
+			Debug.Log($"OUCH | {position}, {damage}, {intensity}");
 		}
 
 		#endregion
