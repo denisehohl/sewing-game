@@ -486,6 +486,7 @@ GameObject:
   m_Component:
   - component: {fileID: 960457776}
   - component: {fileID: 960457777}
+  - component: {fileID: 960457778}
   m_Layer: 2
   m_Name: Sphere
   m_TagString: Untagged
@@ -529,6 +530,33 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!54 &960457778
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 960457775}
+  serializedVersion: 5
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &1207805452
 GameObject:
   m_ObjectHideFlags: 0
@@ -610,6 +638,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8a9fcb2c37744e88ac5b48b73131fa1b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _ouchSound:
+    Guid:
+      Data1: 12155478
+      Data2: 1141803806
+      Data3: -1578715737
+      Data4: -1960372202
+    Path: event:/Human/Ouch
 --- !u!4 &1930874038
 Transform:
   m_ObjectHideFlags: 0
@@ -678,8 +713,8 @@ PrefabInstance:
       value: SewingMachine
       objectReference: {fileID: 0}
     - target: {fileID: 5733417544815978906, guid: f493dec7fb4a81e42849ebbcaa01e8c4, type: 3}
-      propertyPath: _rotationSpeed
-      value: 7.5
+      propertyPath: _sewingSound
+      value: 
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -716,15 +751,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8122812973631811630, guid: 84a9cb99ff43e1f468178027ad23a99a, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 8122812973631811630, guid: 84a9cb99ff43e1f468178027ad23a99a, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 8122812973631811630, guid: 84a9cb99ff43e1f468178027ad23a99a, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 8122812973631811630, guid: 84a9cb99ff43e1f468178027ad23a99a, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -752,6 +787,6 @@ SceneRoots:
   - {fileID: 832575519}
   - {fileID: 436572189645695269}
   - {fileID: 1207805454}
-  - {fileID: 6661247901238267706}
   - {fileID: 367997415}
   - {fileID: 1930874038}
+  - {fileID: 6661247901238267706}

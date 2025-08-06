@@ -203,6 +203,40 @@ Transform:
   - {fileID: 3227455355023004972}
   m_Father: {fileID: 283355894333510582}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &2900109137128016962
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8345947827557061886}
+  m_Layer: 0
+  m_Name: Audio
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8345947827557061886
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2900109137128016962}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 4228291776873269240}
+  - {fileID: 4265711019712794006}
+  - {fileID: 5673287977490351875}
+  m_Father: {fileID: 283355894333510582}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4420101522150354340
 GameObject:
   m_ObjectHideFlags: 0
@@ -266,6 +300,182 @@ Transform:
   - {fileID: 8169793727935475859}
   m_Father: {fileID: 283355894333510582}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &5015074420826327088
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4228291776873269240}
+  - component: {fileID: 8850711765487979991}
+  m_Layer: 0
+  m_Name: Sewing Active
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4228291776873269240
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5015074420826327088}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8345947827557061886}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8850711765487979991
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5015074420826327088}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c0300a93b47d40ab9ceb8062a48b85c2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _event:
+    Guid:
+      Data1: 1646878343
+      Data2: 1118271349
+      Data3: 2069584822
+      Data4: 144886090
+    Path: event:/Machine/Foot/Lower
+--- !u!1 &5254447781031775681
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4705434135743849299}
+  - component: {fileID: 7754697204195025842}
+  - component: {fileID: 5033425488334069533}
+  m_Layer: 0
+  m_Name: HurtBox
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4705434135743849299
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5254447781031775681}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: -0.0759, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2090643711232413693}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7754697204195025842
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5254447781031775681}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b4e47b502c1440bf8a69f43fca169081, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _hurtableLayers:
+    serializedVersion: 2
+    m_Bits: 256
+  _damageValue: 10
+  _intensityValue: 1
+  _damageCooldown: 1
+--- !u!136 &5033425488334069533
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5254447781031775681}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.011327323
+  m_Height: 0.046005942
+  m_Direction: 1
+  m_Center: {x: 0, y: 0.013315751, z: 0}
+--- !u!1 &5490094991271572926
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5673287977490351875}
+  - component: {fileID: 2834334648521235529}
+  m_Layer: 0
+  m_Name: SewingMachine Audio
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5673287977490351875
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5490094991271572926}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.68, y: 2.97, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8345947827557061886}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2834334648521235529
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5490094991271572926}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 149230e5812d44a0a1526f2e24ff91c4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _eventReference:
+    Guid:
+      Data1: -93604934
+      Data2: 1246787935
+      Data3: 19309984
+      Data4: 1758629001
+    Path: event:/Machine/Sewing/SewingMachine
 --- !u!1 &5528218001246991011
 GameObject:
   m_ObjectHideFlags: 0
@@ -300,6 +510,7 @@ Transform:
   - {fileID: 8814031644354071142}
   - {fileID: 1273394215602056419}
   - {fileID: 810990755703658526}
+  - {fileID: 8345947827557061886}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &5733417544815978906
@@ -314,84 +525,99 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39a1f62df4584a6b9a69b82206b98225, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _sewingMachineAudio: {fileID: 2834334648521235529}
   _fabricParent: {fileID: 2415676627725036491}
   _rotationCenter: {fileID: 8814031644354071142}
   _maxSpeed: 0.1
-  _rotationSpeed: 5
+  _rotationSpeed: 7.5
   _accelerationCurve:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 0.0029296875
-      inSlope: 0.9093452
-      outSlope: 0.9093452
+      value: 0.0044555664
+      inSlope: 0.5337696
+      outSlope: 0.5337696
       tangentMode: 0
       weightedMode: 0
       inWeight: 0
-      outWeight: 0.89628106
+      outWeight: 0.04969419
     - serializedVersion: 3
-      time: 0.3914613
-      value: 0.28664243
-      inSlope: 0.11529746
-      outSlope: 0.11529746
+      time: 2.8
+      value: 1
+      inSlope: 1.0031842
+      outSlope: 1.0031842
       tangentMode: 0
       weightedMode: 0
-      inWeight: 0
-      outWeight: 0.25883335
-    - serializedVersion: 3
-      time: 0.7713971
-      value: 0.37582237
-      inSlope: 1.0842268
-      outSlope: 1.0842268
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 1
-      value: 0.7898367
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
+      inWeight: 0.029816544
       outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  _decelerationCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0.26190567
-      inSlope: -0.032164536
-      outSlope: -0.032164536
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0.7746951
-    - serializedVersion: 3
-      time: 0.017456055
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
+  _speedSmoothTime: 0.1
+  _speedSmoothTimeMaxSpeed: 100
+  _needle: {fileID: 7754697204195025842}
   _footDownAnimationBehaviour: {fileID: 1863895180319037094}
   _footUpAnimationBehaviour: {fileID: 3869797529291300127}
+  _footDownSound: {fileID: 8850711765487979991}
+  _footUpSound: {fileID: 1429847779385364801}
   _needleTransform: {fileID: 1722016143532552132}
   _needleTransformMinMaxY: {x: 0.2102, y: 0.2842}
-  _needleSpeed: 80
+  _needleSpeed: 120
   _threadHolderTransform: {fileID: 1965832441980838850}
-  _threadHolderAnimationOffset: 0.1
+  _threadHolderAnimationOffset: -4.95
   _threadHolderTransformMinMaxY: {x: 0.5036, y: 0.60697}
+--- !u!1 &8248258716045404520
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4265711019712794006}
+  - component: {fileID: 1429847779385364801}
+  m_Layer: 0
+  m_Name: Sewing Inactive
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4265711019712794006
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8248258716045404520}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8345947827557061886}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1429847779385364801
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8248258716045404520}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c0300a93b47d40ab9ceb8062a48b85c2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _event:
+    Guid:
+      Data1: 1968580632
+      Data2: 1210691401
+      Data3: 1723157132
+      Data4: -1760891753
+    Path: event:/Machine/Foot/Rise
 --- !u!1 &8629282395433115535
 GameObject:
   m_ObjectHideFlags: 0
@@ -579,7 +805,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: -1633664606022031555, guid: 2a75f18a92db335479580437f7818d93, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4705434135743849299}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2a75f18a92db335479580437f7818d93, type: 3}
 --- !u!1 &790665350581919757 stripped
@@ -595,6 +824,11 @@ Transform:
 --- !u!4 &1965832441980838850 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -1216128157209277694, guid: 2a75f18a92db335479580437f7818d93, type: 3}
+  m_PrefabInstance: {fileID: 8383305376132769984}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &2090643711232413693 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -1633664606022031555, guid: 2a75f18a92db335479580437f7818d93, type: 3}
   m_PrefabInstance: {fileID: 8383305376132769984}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &4783932054401785044 stripped

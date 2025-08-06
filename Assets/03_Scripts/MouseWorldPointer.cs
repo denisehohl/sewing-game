@@ -24,23 +24,18 @@ namespace Moreno.SewingGame
 		#region private Variables
 
 		private Vector3 _mousePressedStartWorldPosition;
-		private Vector3 _currentPosition, _previousPosition;
+		private Vector3 _currentPosition, _previousPosition, _deltaPosition;
 		private bool _mousePressed = true;
 		private GameObject _currentInteractionObject;
 		#endregion
 
 		#region Properties
 
-		public Vector3 DeltaPosition
-		{
-			get
-			{
-				if(!_mousePressed) return Vector3.zero;
-				return _currentPosition - _previousPosition;
-			}
-		}
+		public Vector3 DeltaPosition => _deltaPosition;
 
 		public Vector3 CurrentPosition => _currentPosition;
+
+		public GameObject CurrentInteractionObject => _currentInteractionObject;
 
 		public Vector3 MousePressedStartWorldPosition => _mousePressedStartWorldPosition;
 
@@ -51,6 +46,7 @@ namespace Moreno.SewingGame
 		#region Delegates & Events
 
 		public static  event Action<GameObject> OnObjectClicked;
+		public static  event Action<GameObject> OnInteractableEntered;
 
 		#endregion
 
@@ -64,6 +60,7 @@ namespace Moreno.SewingGame
 		public override void ResetStatics()
 		{
 			OnObjectClicked = null;
+			OnInteractableEntered = null;
 			base.ResetStatics();
 		}
 
@@ -88,35 +85,36 @@ namespace Moreno.SewingGame
 		private void TryDetectMouseInput()
 		{
 			_previousPosition = _currentPosition;
+			GameObject _previousObject = _currentInteractionObject;
 			if (TryMouseRaycast(out RaycastHit hit))
 			{
 				_currentPosition = hit.point;
 				_pointer.position = _currentPosition;
-				_currentInteractionObject = hit.collider.gameObject;
+				var obj = hit.collider.gameObject;
+				_currentInteractionObject = obj;
+				bool isFabric = _fabricLayer.Contains(obj.layer);
+				bool isInteractable = _interactableLayer.Contains(obj.layer);
 				
 				if (Input.GetMouseButtonDown(0))
 				{
 					_mousePressed = true;
 					_mousePressedStartWorldPosition = hit.point;
 
-					Debug.Log("Hit object: " + hit.collider.name);
-					if (_fabricLayer.Contains(hit.collider.gameObject.layer))
-					{
-						//fabric clicked
-					}
-					else if (_interactableLayer.Contains(hit.collider.gameObject.layer))
-					{
-						//obstacle clicked
-					}
 					OnObjectClicked?.Invoke(_currentInteractionObject);
 				}
 
+				if (isInteractable && _previousObject != _currentInteractionObject)
+				{
+					OnInteractableEntered?.Invoke(_currentInteractionObject);
+				}
 			}
 			
 			if (Input.GetMouseButtonUp(0))
 			{
 				_mousePressed = false;
 			}
+
+			_deltaPosition = _currentPosition - _previousPosition;
 
 		}
 

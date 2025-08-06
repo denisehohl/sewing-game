@@ -1,9 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using Ateo.Animation;
-using Ateo.Extensions;
+using FMODUnity;
+using Moreno.SewingGame.Audio;
 using Sirenix.OdinInspector;
 using UnityEngine;
-using UnityEngine.InputSystem;
 using UnityEngine.Serialization;
 
 namespace Moreno.SewingGame
@@ -12,6 +13,9 @@ namespace Moreno.SewingGame
 	{
 		#region private Serialized Variables
 
+		[BoxGroup("Audio")]
+		[SerializeField, Required]
+		private SewingMachineEventInstance _sewingMachineAudio;
 		[SerializeField, Required]
 		[BoxGroup("Gameplay")]
 		private Transform _fabricParent;
@@ -29,7 +33,13 @@ namespace Moreno.SewingGame
 		private AnimationCurve _accelerationCurve = new AnimationCurve(new []{new Keyframe(0,0), new Keyframe(1,1)});
 		[SerializeField]
 		[BoxGroup("Gameplay")]
-		private AnimationCurve _decelerationCurve = new AnimationCurve(new []{new Keyframe(0,1), new Keyframe(1,0)});
+		private float _speedSmoothTime;
+		[SerializeField]
+		[BoxGroup("Gameplay")]
+		private float _speedSmoothTimeMaxSpeed = 100f;
+		[SerializeField]
+		[BoxGroup("Gameplay")]
+		private Hurtable _needle;
 		
 		[SerializeField, Required]
 		[BoxGroup("Foot")]
@@ -37,6 +47,13 @@ namespace Moreno.SewingGame
 		[SerializeField, Required]
 		[BoxGroup("Foot")]
 		private AnimationBehaviour _footUpAnimationBehaviour;
+		[SerializeField, Required]
+		[BoxGroup("Foot")]
+		private PlayOneShot _footDownSound;
+		[SerializeField, Required]
+		[BoxGroup("Foot")]
+		private PlayOneShot _footUpSound;
+		
 		[SerializeField, Required]
 		[BoxGroup("Needle")]
 		private Transform _needleTransform;
@@ -57,17 +74,18 @@ namespace Moreno.SewingGame
 		[BoxGroup("Thread")]
 		private Vector2 _threadHolderTransformMinMaxY;
 		
-
-		
 		#endregion
 
 		#region private Variables
 
-		private float _currentSpeed = 0; 
-		private float _currentHeldDownTime = 0;
+		private float _speedVelocity;
+		private float _currentSpeed;
+		private float _targetSpeed;
+		private int _currentKeysPressed;
 		private float _needleAnimationTime = 0;
 		private float _currentRotation = 0;
 		private bool _footDownState;
+		private float _previousNormalizedNeedleAnimationTime;
 
 		#endregion
 
@@ -97,42 +115,79 @@ namespace Moreno.SewingGame
 
 		public void StopMachine()
 		{
-			_currentHeldDownTime = 0;
+			_sewingMachineAudio.StopSound();
 		}
 
 		public void AddAcceleration(float value)
 		{
-			_currentHeldDownTime += value;
 			EvaluateCurrentSpeed(value > 0);
+			UpdateAudioSpeed();
 		}
 
 		#endregion
 
 		#region Private Methods
 
+		private List<KeyCode> _possiblePowerKeys = new List<KeyCode>() {KeyCode.Q, KeyCode.W, KeyCode.E};
+
+		private List<KeyCode> _pressedKeys = new List<KeyCode>();
+
+		private bool GetPowerKeys()
+		{
+			int previousKeyCount = _pressedKeys.Count;
+			foreach (KeyCode key in _possiblePowerKeys)
+			{
+				if (Input.GetKeyDown(key))
+				{
+					if(!_pressedKeys.Contains(key))
+						_pressedKeys.Add(key);
+				}
+
+				if (Input.GetKeyUp(key))
+				{
+					if(_pressedKeys.Contains(key))
+						_pressedKeys.Remove(key);
+				}
+			}
+
+			int currentKeyCount = _pressedKeys.Count;
+
+			if (previousKeyCount != currentKeyCount)
+			{
+				//count change
+				if (currentKeyCount == 0)
+				{
+					_sewingMachineAudio.StopSound();
+				}
+
+				if (previousKeyCount == 0)
+				{
+					_sewingMachineAudio.StartSound();
+				}
+			}
+
+			_currentKeysPressed = currentKeyCount;
+			return currentKeyCount > 0;
+		}
+
 		private void CheckPlayerInput()
 		{
-			bool gasDown = Input.GetKey(KeyCode.W);
-
-			if (Input.GetKeyUp(KeyCode.W) || Input.GetKeyDown(KeyCode.W))
-			{
-				_currentHeldDownTime = 0;
-			}
+			bool gasDown = GetPowerKeys();
 
 			if (Input.GetKeyDown(KeyCode.LeftShift))
 			{
 				ToggleFootState();
 			}
 
+			EvaluateCurrentSpeed(gasDown);
 			if (gasDown)
 			{
-				_currentHeldDownTime += Time.deltaTime;
 				_needleAnimationTime += _needleSpeed * _currentSpeed * Time.deltaTime;
 			}
-			EvaluateCurrentSpeed(gasDown);
 			MoveFabricForward();
 			AnimateNeedle();
 			AnimateThreadHolder();
+			UpdateAudioSpeed();
 			
 			if(!gasDown) return;
 			if(MouseWorldPointer.Instance == null) return;
@@ -153,15 +208,16 @@ namespace Moreno.SewingGame
 
 		private void MoveFabricForward()
 		{
-			if (_currentSpeed == 0) return;
+			if (_currentKeysPressed <= 0) return;
 			_fabricParent.position += _rotationCenter.forward * (_currentSpeed * _maxSpeed);
 		}
 
 		private void EvaluateCurrentSpeed(bool gasDown)
 		{
-			_currentSpeed = gasDown 
-				? -_accelerationCurve.Evaluate(_currentHeldDownTime) 
+			_targetSpeed = gasDown 
+				? -_accelerationCurve.Evaluate(_currentKeysPressed) 
 				: 0;
+			_currentSpeed = Mathf.SmoothDamp(_currentSpeed, _targetSpeed, ref _speedVelocity, _speedSmoothTime, _speedSmoothTimeMaxSpeed);
 		}
 
 		private float GetNormalizedSinValue(float time)
@@ -172,20 +228,25 @@ namespace Moreno.SewingGame
 
 		private void AnimateNeedle()
 		{
-			AnimateBetweenPoints(_needleAnimationTime,_needleTransform,_needleTransformMinMaxY);
+			AnimateBetweenPoints(_needleAnimationTime,_needleTransform,_needleTransformMinMaxY, out var normalized);
+			if (Mathf.Abs(_previousNormalizedNeedleAnimationTime - normalized) > 0.001f)
+			{
+				if(normalized <= 0.01f) _needle.CheckIfMouseIsOverHurtable();
+			}
+			_previousNormalizedNeedleAnimationTime = normalized;
 		}
 
 		private void AnimateThreadHolder()
 		{
 			float time = _needleAnimationTime + _threadHolderAnimationOffset;
-			AnimateBetweenPoints(time, _threadHolderTransform, _threadHolderTransformMinMaxY);
+			AnimateBetweenPoints(time, _threadHolderTransform, _threadHolderTransformMinMaxY,out _);
 		}
 
-		private void AnimateBetweenPoints(float time, Transform target, Vector2 localYBounds)
+		private void AnimateBetweenPoints(float time, Transform target, Vector2 localYBounds, out float normalizedTime)
 		{
-			float normalizedHeldTime = GetNormalizedSinValue(time);
+			normalizedTime = GetNormalizedSinValue(time);
 			var vector3 = target.localPosition;
-			float y = Mathf.Lerp(localYBounds.x, localYBounds.y, normalizedHeldTime);
+			float y = Mathf.Lerp(localYBounds.x, localYBounds.y, normalizedTime);
 			vector3.y = y;
 			target.localPosition = vector3;
 		}
@@ -220,11 +281,18 @@ namespace Moreno.SewingGame
 			if (_footDownState)
 			{
 				_footDownAnimationBehaviour.Execute(false);
+				_footDownSound.PlayEvent();
 			}
 			else
 			{
 				_footUpAnimationBehaviour.Execute(false);
+				_footUpSound.PlayEvent();
 			}
+		}
+
+		private void UpdateAudioSpeed()
+		{
+			_sewingMachineAudio.SetSpeed(_currentSpeed);
 		}
 
 		#endregion

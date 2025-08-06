@@ -7,11 +7,15 @@ namespace Moreno.SewingGame
 	{
 		[SerializeField]
 		private Vector2 _pinDamageRange = new Vector2(0.2f, 4f);
+		[SerializeField]
+		private Vector2 _pinDamageEnteredRange = new Vector2(0.2f, 2f);
 
 		[SerializeField]
 		private float _pinMagnitudeToRemove = 1f;
 
 		public Vector2 PinDamageRange => _pinDamageRange;
+
+		public Vector2 PinDamageEnteredRange => _pinDamageEnteredRange;
 
 		public float PinMagnitudeToRemove => _pinMagnitudeToRemove;
 	}

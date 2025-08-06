@@ -37,19 +37,20 @@ namespace Moreno.SewingGame
 		private void OnEnable()
 		{
 			MouseWorldPointer.OnObjectClicked += OnObjectClicked;
+			MouseWorldPointer.OnInteractableEntered += OnInteractableEntered;
 			_rigidbody.isKinematic = true;
 		}
 
 		private void OnDisable()
 		{
 			MouseWorldPointer.OnObjectClicked -= OnObjectClicked;
+			MouseWorldPointer.OnInteractableEntered -= OnInteractableEntered;
 			if (_routine != null)
 			{
 				StopCoroutine(_routine);
 				_routine = null;
 			}
 		}
-
 
 		#endregion
 
@@ -73,13 +74,17 @@ namespace Moreno.SewingGame
 
 			if (obj == _negativeCollider)
 			{
-				var damageRange = MainManager.Instance.CurrentSettings.PinDamageRange;
-				var delta = MouseWorldPointer.Instance.DeltaPosition;
-				var dot = Vector3.Dot(delta.normalized, _negativeCollider.transform.right);
-				var damage = Mathf.Lerp(damageRange.x, damageRange.y, dot);
-				
-				DamageManager.Instance.CauseDamage(MouseWorldPointer.Instance.CurrentPosition,damage, dot);
+				CheckIfHurt(MainManager.Instance.CurrentSettings.PinDamageRange);
 			}
+		}
+
+		private void CheckIfHurt(Vector2 damageRange)
+		{
+			var delta = MouseWorldPointer.Instance.DeltaPosition;
+			var dot = Vector3.Dot(delta.normalized, _negativeCollider.transform.right);
+			var damage = Mathf.Lerp(damageRange.x, damageRange.y, dot);
+				
+			DamageManager.Instance.CauseDamage(MouseWorldPointer.Instance.CurrentPosition,damage, dot);
 		}
 
 		private IEnumerator CheckIfDraggedInDirection()
@@ -103,6 +108,13 @@ namespace Moreno.SewingGame
 		#endregion
 
 		#region Event Callbacks
+		
+		private void OnInteractableEntered(GameObject obj)
+		{
+			if(obj != _negativeCollider) return;
+			if(!_rigidbody.isKinematic) return;
+			CheckIfHurt(MainManager.Instance.CurrentSettings.PinDamageEnteredRange);
+		}
 
 		#endregion
 
