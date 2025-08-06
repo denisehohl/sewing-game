@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using Ateo.Animation;
+using Ateo.Common;
 using FMODUnity;
 using Moreno.SewingGame.Audio;
 using Sirenix.OdinInspector;
@@ -9,7 +11,7 @@ using UnityEngine.Serialization;
 
 namespace Moreno.SewingGame
 {
-	public class SewingMachineController : MonoBehaviour
+	public class SewingMachineController : ComponentPublishBehaviour<SewingMachineController>
 	{
 		#region private Serialized Variables
 
@@ -24,7 +26,7 @@ namespace Moreno.SewingGame
 		private Transform _rotationCenter;
 		[SerializeField]
 		[BoxGroup("Gameplay")]
-		private float _maxSpeed = 1f;
+		private float _fabricMaxSpeed = 1f;
 		[SerializeField]
 		[BoxGroup("Gameplay")]
 		private float _rotationSpeed = 1f;
@@ -40,6 +42,12 @@ namespace Moreno.SewingGame
 		[SerializeField]
 		[BoxGroup("Gameplay")]
 		private Hurtable _needle;
+		[SerializeField]
+		[BoxGroup("Gameplay")]
+		private ParticleSystem _brokenParticleSystem;
+		[SerializeField]
+		[BoxGroup("Gameplay")]
+		private GameObject _todoMessage;
 		
 		[SerializeField, Required]
 		[BoxGroup("Foot")]
@@ -86,6 +94,7 @@ namespace Moreno.SewingGame
 		private float _currentRotation = 0;
 		private bool _footDownState;
 		private float _previousNormalizedNeedleAnimationTime;
+		private bool _broken = false;
 
 		#endregion
 
@@ -99,6 +108,11 @@ namespace Moreno.SewingGame
 
 		#region Monobehaviour Callbacks
 
+		protected override void OnStart()
+		{
+			_todoMessage.SetActive(false);
+		}
+
 		private void Update()
 		{
 			CheckPlayerInput();
@@ -107,6 +121,25 @@ namespace Moreno.SewingGame
 		#endregion
 
 		#region Public Methods
+
+		public void BreakMachine()
+		{
+			StopMachine();
+			_broken = true;
+			_brokenParticleSystem.Play(true);
+			_todoMessage.SetActive(true);
+
+			StartCoroutine(Routine());
+			return;
+
+			IEnumerator Routine()
+			{
+				yield return new WaitForSeconds(5);
+				_broken = false;
+				_brokenParticleSystem.Stop(true,ParticleSystemStopBehavior.StopEmitting);
+				_todoMessage.SetActive(false);
+			}
+		}
 
 		public void ResetMachine()
 		{
@@ -134,6 +167,7 @@ namespace Moreno.SewingGame
 
 		private bool GetPowerKeys()
 		{
+			if (_broken) return false;
 			int previousKeyCount = _pressedKeys.Count;
 			foreach (KeyCode key in _possiblePowerKeys)
 			{
@@ -209,7 +243,7 @@ namespace Moreno.SewingGame
 		private void MoveFabricForward()
 		{
 			if (_currentKeysPressed <= 0) return;
-			_fabricParent.position += _rotationCenter.forward * (_currentSpeed * _maxSpeed);
+			_fabricParent.position += _rotationCenter.forward * (_currentSpeed * _fabricMaxSpeed * Time.deltaTime);
 		}
 
 		private void EvaluateCurrentSpeed(bool gasDown)

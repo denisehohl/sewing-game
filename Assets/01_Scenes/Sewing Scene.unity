@@ -712,14 +712,13 @@ PrefabInstance:
       propertyPath: m_Name
       value: SewingMachine
       objectReference: {fileID: 0}
-    - target: {fileID: 5733417544815978906, guid: f493dec7fb4a81e42849ebbcaa01e8c4, type: 3}
-      propertyPath: _sewingSound
-      value: 
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 2736329977301593620, guid: f493dec7fb4a81e42849ebbcaa01e8c4, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 0}
   m_SourcePrefab: {fileID: 100100000, guid: f493dec7fb4a81e42849ebbcaa01e8c4, type: 3}
 --- !u!1001 &6661247901238267706
 PrefabInstance:

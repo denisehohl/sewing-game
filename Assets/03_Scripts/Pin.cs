@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace Moreno.SewingGame
 {
@@ -14,6 +15,9 @@ namespace Moreno.SewingGame
 		private GameObject _negativeCollider;
 		[SerializeField]
 		private Rigidbody _rigidbody;
+
+		[SerializeField]
+		private Damageable _damageable;
 
 		#endregion
 
@@ -38,6 +42,7 @@ namespace Moreno.SewingGame
 		{
 			MouseWorldPointer.OnObjectClicked += OnObjectClicked;
 			MouseWorldPointer.OnInteractableEntered += OnInteractableEntered;
+			_damageable.OnDamageTaken += OnDamageTaken;
 			_rigidbody.isKinematic = true;
 		}
 
@@ -45,10 +50,20 @@ namespace Moreno.SewingGame
 		{
 			MouseWorldPointer.OnObjectClicked -= OnObjectClicked;
 			MouseWorldPointer.OnInteractableEntered -= OnInteractableEntered;
+			_damageable.OnDamageTaken -= OnDamageTaken;
 			if (_routine != null)
 			{
 				StopCoroutine(_routine);
 				_routine = null;
+			}
+		}
+
+		private void OnDamageTaken(Hurtable obj)
+		{
+			var rand = Random.value;
+			if (rand > MainManager.Instance.CurrentSettings.PinSurvivalChance)
+			{
+				SewingMachineController.Instance.BreakMachine();
 			}
 		}
 
@@ -117,7 +132,5 @@ namespace Moreno.SewingGame
 		}
 
 		#endregion
-
-
 	}
 }
