@@ -5849,6 +5849,7 @@ Transform:
   - {fileID: 8653433657340294536}
   - {fileID: 4108569495694714703}
   - {fileID: 6633515020748204429}
+  - {fileID: 1367389605948918402}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &5733417544815978906
@@ -5904,7 +5905,7 @@ MonoBehaviour:
   _needleTransform: {fileID: 1722016143532552132}
   _needleTransformMinMaxY: {x: 0.2102, y: 0.2842}
   _needleSpeed: 120
-  _minNeedleAnimationTimeStep: 0.5
+  _minNeedleAnimationTimeStep: 5
   _threadHolderTransform: {fileID: 1965832441980838850}
   _threadHolderAnimationOffset: -4.95
   _threadHolderTransformMinMaxY: {x: 0.5036, y: 0.60697}
@@ -6053,6 +6054,37 @@ MonoBehaviour:
   OnAnimationReset:
     m_PersistentCalls:
       m_Calls: []
+--- !u!1 &9208032382804849598
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1367389605948918402}
+  m_Layer: 0
+  m_Name: Pin Manager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1367389605948918402
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9208032382804849598}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 283355894333510582}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &8383305376132769984
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -43,6 +43,8 @@ namespace Moreno.SewingGame
 
 		public bool MousePressed => _mousePressed;
 
+		public bool PressedDownOnFabric => _pressedDownOnFabric;
+
 		#endregion
 
 		#region Delegates & Events

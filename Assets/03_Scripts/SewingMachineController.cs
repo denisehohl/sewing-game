@@ -115,6 +115,18 @@ namespace Moreno.SewingGame
 
 		#region Properties
 
+		public float CurrentSpeed
+		{
+			get
+			{
+				if (!_footDown)
+				{
+					return 0;
+				}
+				return _currentSpeed;
+			}
+		}
+
 		#endregion
 
 		#region Delegates & Events
@@ -239,11 +251,13 @@ namespace Moreno.SewingGame
 			{
 				_needleAnimationTime += Mathf.Abs(_needleSpeed * _currentSpeed) * Time.deltaTime;
 			}
+			
 			MoveFabricForward();
 			AnimateNeedle();
 			AnimateThreadHolder();
 			UpdateAudioSpeed();
 
+			if(!MouseWorldPointer.Instance.PressedDownOnFabric) return;
 			float rotationDirection = MouseWorldPointer.Instance.TryDetectMouseDragDirection();
 			RotateFabric(rotationDirection);
 		}
@@ -262,16 +276,11 @@ namespace Moreno.SewingGame
 		private void MoveFabricForward()
 		{
 			if (_currentKeysPressed <= 0) return;
-			_fabricParent.position += _rotationCenter.forward * (_currentSpeed * _fabricMaxSpeed * Time.deltaTime);
+			_fabricParent.position += _rotationCenter.forward * (CurrentSpeed * _fabricMaxSpeed * Time.deltaTime);
 		}
 
 		private void EvaluateCurrentSpeed(bool gasDown)
 		{
-			if (!_footDown)
-			{
-				_currentSpeed = 0;
-				return;
-			}
 			_targetSpeed = gasDown 
 				? -_accelerationCurve.Evaluate(_currentKeysPressed) 
 				: 0;
@@ -289,7 +298,7 @@ namespace Moreno.SewingGame
 			AnimateBetweenPoints(_needleAnimationTime,_needleTransform,_needleTransformMinMaxY, out var normalized);
 			if (Mathf.Abs(_previousNormalizedNeedleAnimationTime - normalized) > 0.001f)
 			{
-				if (normalized <= 0.01f)
+				if (normalized <= 0.2f)
 				{
 					if (_needleAnimationTime - _minNeedleAnimationTimeStep > _lastNeedleStitchTime)
 					{
