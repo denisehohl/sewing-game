@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using Ateo.Common;
+using FMODUnity;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -19,6 +20,9 @@ namespace Moreno.SewingGame
 
 		[SerializeField]
 		private Damageable _damageable;
+
+		[SerializeField]
+		private EventReference _extractSound;
 
 		#endregion
 
@@ -118,6 +122,7 @@ namespace Moreno.SewingGame
 			{
 				_rigidbody.isKinematic = false;
 				_rigidbody.AddForce((_negativeCollider.transform.right+ Vector3.up * 0.2f) * 500f);
+				RuntimeManager.PlayOneShot(_extractSound,transform.position);
 				yield return new WaitForSeconds(5f);
 				gameObject.SetActive(false);
 			}

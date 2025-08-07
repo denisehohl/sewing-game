@@ -1,6 +1,7 @@
 ﻿using System;
 using FMOD.Studio;
 using FMODUnity;
+using Moreno.SewingGame.Path;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using STOP_MODE = FMOD.Studio.STOP_MODE;
@@ -84,6 +85,8 @@ namespace Moreno.SewingGame.Audio
 			_currentMusicInstance = RuntimeManager.CreateInstance(_dynamicMusic);
 			_musicIntensityId = _currentMusicInstance.GetParameterId("Intensity");
 			_isDynamic = true;
+
+			PathEvaluater.OnAccuracyChanged += OnAccuracyChanged;
 			
 			PlayInstance(withStatic);
 		}
@@ -107,8 +110,14 @@ namespace Moreno.SewingGame.Audio
 				_currentMusicInstance.stop(STOP_MODE.ALLOWFADEOUT);
 				_currentMusicInstance.release();
 			}
+
+			if (_isDynamic)
+			{
+				PathEvaluater.OnAccuracyChanged -= OnAccuracyChanged;
+			}
 			_isDynamic = false;
 		}
+
 
 		private void PlayInstance(bool withStatic = false)
 		{
@@ -123,6 +132,7 @@ namespace Moreno.SewingGame.Audio
 		#endregion
 
 		#region Event Callbacks
+		private void OnAccuracyChanged(float intensity) => SetMusicIntensity(intensity);
 		
 		private void ToggleDynamic()
 		{

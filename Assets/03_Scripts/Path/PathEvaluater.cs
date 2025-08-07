@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
@@ -19,6 +20,7 @@ namespace Moreno.SewingGame.Path
 
 		private PathData _currentPath;
 		private float _accumulatedDistanceOffset;
+		private float _accuracyTrend;
 
 		#endregion
 
@@ -26,29 +28,64 @@ namespace Moreno.SewingGame.Path
 
 		public float AccumulatedDistanceOffset => _accumulatedDistanceOffset;
 
+		public float AccuracyTrend
+		{
+			get => _accuracyTrend;
+			set
+			{
+				var clamped = Mathf.Clamp(value, 0, 1f);
+				if(clamped == _accuracyTrend) return;
+				_accuracyTrend = clamped;
+				OnAccuracyChanged?.Invoke(clamped);
+			}
+		}
+
 		#endregion
 
 		#region Delegates & Events
+
+		public static event Action<float> OnAccuracyChanged; 
 
 		#endregion
 
 		#region Monobehaviour Callbacks
 
+		private void OnEnable()
+		{
+			DamageManager.OnDamageTaken += OnDamageTaken;
+		}
+
+		private void OnDisable()
+		{
+			DamageManager.OnDamageTaken -= OnDamageTaken;
+		}
+
+		private void OnDestroy()
+		{
+			OnAccuracyChanged = null;
+		}
+
+		private void OnDamageTaken(float damage, float intensity)
+		{
+			AccuracyTrend -= intensity;
+		}
+
 		#endregion
 
 		#region Public Methods
 
-		public void SetPath(PathData path)
+		public void PrepareLevel()
 		{
 			ResetValues();
-			_currentPath = path;
-			UpdatePathVisual(path);
+			_currentPath = Context.CurrentLevel.PathData;
+			UpdatePathVisual(_currentPath);
 		}
 
 		public void ResetValues()
 		{
 			_currentPath = null;
 			_accumulatedDistanceOffset = 0;
+			_accuracyTrend = 0;
 			ResetPlayerPathVisualizer();
 		}
 
@@ -59,6 +96,8 @@ namespace Moreno.SewingGame.Path
 			float distance = _currentPath.Points.GetDistanceToClosestPointOnPath(localPoint, out var pointOnTrack);
 			
 			AddPointToPlayerPath(localPoint);
+
+			AccuracyTrend += Context.CurrentLevel.GetAccuracyScoreForDistanceToPath(distance);
 			
 			_accumulatedDistanceOffset += distance;
 		}

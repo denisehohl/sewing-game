@@ -31,14 +31,14 @@ namespace Moreno.SewingGame
 
 		#region Public Methods
 
-		public void PrepareLevel(LevelSetting level)
+		public void PrepareLevel()
 		{
-			_currentLevel = level;
+			_currentLevel = Context.CurrentLevel;
 			RemoveAllPins();
-			if(level == null) return;
-			if (!level.SpawnPins) return;
+			if(_currentLevel == null) return;
+			if (!_currentLevel.SpawnPins) return;
 
-			for (float distance = level.PinSpawnDistance; distance < level.PathData.PathLength; distance += level.PinSpawnDistance)
+			for (float distance = _currentLevel.PinSpawnDistance; distance < _currentLevel.PathData.PathLength; distance += _currentLevel.PinSpawnDistance)
 			{
 				AddPinAtPathDistance(distance);
 			}

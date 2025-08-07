@@ -15,6 +15,30 @@ MonoBehaviour:
   _machineDirectionRange: 0
   _machineDirectionChangeRange: 0
   _pathData: {fileID: 11400000, guid: c0272ac0130ae2842afb09c83c74976a, type: 2}
+  _accuracyScorePerDistance:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0.065761566
+      inSlope: -0.9836601
+      outSlope: -0.9836601
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.047400612
+    - serializedVersion: 3
+      time: 1.4272523
+      value: -0.9968262
+      inSlope: -2.9157877
+      outSlope: -2.9157877
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.04281346
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
   _spawnPins: 1
   _pinSpawnDistanceRange: {x: 10, y: 15}
   _canPinsFlip: 1

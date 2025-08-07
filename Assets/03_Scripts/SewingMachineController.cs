@@ -37,6 +37,9 @@ namespace Moreno.SewingGame
 		[SerializeField, Required]
 		[BoxGroup("Gameplay References")]
 		private Transform _fabricParent;
+		[BoxGroup("Gameplay References")]
+		[SerializeField, Required]
+		private Transform _fabricRotator;
 		[SerializeField, Required]
 		[BoxGroup("Gameplay References")]
 		private Transform _rotationCenter;
@@ -153,11 +156,11 @@ namespace Moreno.SewingGame
 
 		#region Public Methods
 
-		public void PrepareLevel(LevelSetting level)
+		public void PrepareLevel()
 		{
 			ResetMachine();
-			_pathEvaluator.SetPath(level.PathData);
-			_pinManager.PrepareLevel(level);
+			_pathEvaluator.PrepareLevel();
+			_pinManager.PrepareLevel();
 		}
 
 		public void BreakMachine()
@@ -166,6 +169,7 @@ namespace Moreno.SewingGame
 			_broken = true;
 			_brokenParticleSystem.Play(true);
 			_todoMessage.SetActive(true);
+			_pathEvaluator.AccuracyTrend = 0;
 
 			StartCoroutine(Routine());
 			return;
@@ -270,6 +274,9 @@ namespace Moreno.SewingGame
 		private void RotateFabric(float direction)
 		{
 			float speed = _footDown ? _currentSpeed : -1;
+			_fabricRotator.Rotate(Vector3.up,direction*speed*_rotationSpeed);
+			return;
+			
 			//_fabricParent.RotateAround(_rotationCenter.position, Vector3.up, direction * _currentSpeed);
 			_fabricParent.RotateAroundCustomPivot(
 				_fabricParent.InverseTransformPoint(MouseWorldPointer.Instance.CurrentPosition),
@@ -308,7 +315,10 @@ namespace Moreno.SewingGame
 					if (_needleAnimationTime - _minNeedleAnimationTimeStep > _lastNeedleStitchTime)
 					{
 						_lastNeedleStitchTime = _needleAnimationTime;
-						OnNeedleStitch();
+						if (_footDown)
+						{
+							OnNeedleStitch();
+						}
 					}
 				}
 			}

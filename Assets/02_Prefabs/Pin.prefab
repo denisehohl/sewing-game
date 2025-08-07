@@ -213,6 +213,13 @@ MonoBehaviour:
   _negativeCollider: {fileID: 3946252104353949112}
   _rigidbody: {fileID: 6391274031592320398}
   _damageable: {fileID: 624855702582622609}
+  _extractSound:
+    Guid:
+      Data1: 635014097
+      Data2: 1085881738
+      Data3: 1674979762
+      Data4: -327703900
+    Path: event:/Objects/Pin Extracted
 --- !u!54 &6391274031592320398
 Rigidbody:
   m_ObjectHideFlags: 0

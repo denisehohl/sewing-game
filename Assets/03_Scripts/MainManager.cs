@@ -36,6 +36,12 @@ namespace Moreno.SewingGame
 			StartLevel(_levelToStart);
 		}
 
+		protected override void OnWithdraw()
+		{
+			base.OnWithdraw();
+			Context.CurrentLevel = null;
+		}
+
 		#endregion
 
 		#region Public Methods
@@ -43,7 +49,8 @@ namespace Moreno.SewingGame
 		[Button]
 		public void StartLevel(LevelSetting level)
 		{
-			SewingMachineController.Instance.PrepareLevel(level);
+			Context.CurrentLevel = level;
+			SewingMachineController.Instance.PrepareLevel();
 		}
 
 		#endregion

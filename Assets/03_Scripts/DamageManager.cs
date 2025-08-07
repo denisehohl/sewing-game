@@ -1,4 +1,5 @@
-﻿using Ateo.Common;
+﻿using System;
+using Ateo.Common;
 using FMOD.Studio;
 using FMODUnity;
 using UnityEngine;
@@ -28,9 +29,16 @@ namespace Moreno.SewingGame
 
 		#region Delegates & Events
 
+		public static event Action<float,float> OnDamageTaken;
+
 		#endregion
 
 		#region Monobehaviour Callbacks
+
+		public override void ResetStatics()
+		{
+			OnDamageTaken = null;
+		}
 
 		#endregion
 
@@ -43,6 +51,7 @@ namespace Moreno.SewingGame
 			DebugExtension.DrawMarker(position,intensity,Color.red,depthTest: false);
 			Debug.Log($"OUCH | {position}, {damage}, {intensity}");
 			PlaySound(intensity);
+			OnDamageTaken?.Invoke(damage, intensity);
 		}
 
 		#endregion

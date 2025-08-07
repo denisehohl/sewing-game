@@ -17,6 +17,10 @@ namespace Moreno.SewingGame
 
 		[SerializeField]
 		private PathData _pathData;
+
+		[SerializeField]
+		private AnimationCurve _accuracyScorePerDistance;
+		
 		[SerializeField]
 		private bool _spawnPins = false;
 		[SerializeField, ShowIf(nameof(_spawnPins))]
@@ -41,5 +45,10 @@ namespace Moreno.SewingGame
 		public PathData PathData => _pathData;
 
 		private bool _showPinRotationOption => _spawnPins && _canPinsFlip;
+
+		public float GetAccuracyScoreForDistanceToPath(float distance)
+		{
+			return _accuracyScorePerDistance.Evaluate(distance);
+		}
 	}
 }
