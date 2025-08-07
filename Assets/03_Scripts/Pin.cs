@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using Ateo.Common;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -117,6 +118,8 @@ namespace Moreno.SewingGame
 			{
 				_rigidbody.isKinematic = false;
 				_rigidbody.AddForce((_negativeCollider.transform.right+ Vector3.up * 0.2f) * 500f);
+				yield return new WaitForSeconds(5f);
+				gameObject.SetActive(false);
 			}
 		}
 

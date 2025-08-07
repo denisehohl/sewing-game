@@ -63,6 +63,17 @@ namespace Moreno.SewingGame.Path
 			_accumulatedDistanceOffset += distance;
 		}
 
+		public bool TryGetWorldPositionFromPathDistance(float distance, out Vector3 worldPoint)
+		{
+			if (_currentPath.TryGetPointAtDistance(distance, out var pathPoint))
+			{
+				worldPoint = TranslatePathPointToWorldPosition(pathPoint);
+				return true;
+			}
+			worldPoint = Vector3.zero;
+			return false;
+		}
+
 		#endregion
 
 		#region Private Methods
@@ -83,6 +94,11 @@ namespace Moreno.SewingGame.Path
 		{
 			Vector3 point = _pathVisualizer.transform.InverseTransformPoint(worldPosition);
 			return new Vector2(point.x, point.y);
+		}
+
+		private Vector3 TranslatePathPointToWorldPosition(Vector2 pathPoint)
+		{
+			return _pathVisualizer.transform.TransformPoint(pathPoint);
 		}
 
 		private void UpdatePathVisual(PathData data)

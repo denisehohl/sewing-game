@@ -14,7 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _machineDirectionRange: 0
   _machineDirectionChangeRange: 0
-  _pinSpawnRate: 0
-  _canPinsFlip: 0
-  _pinRandomRotationRange: 0
   _pathData: {fileID: 11400000, guid: c0272ac0130ae2842afb09c83c74976a, type: 2}
+  _spawnPins: 1
+  _pinSpawnDistanceRange: {x: 10, y: 15}
+  _canPinsFlip: 1
+  _pinRandomRotationRange: 74.8

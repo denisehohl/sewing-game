@@ -19,36 +19,39 @@ namespace Moreno.SewingGame
 		[BoxGroup("Audio")]
 		[SerializeField, Required]
 		private SewingMachineEventInstance _sewingMachineAudio;
-		[SerializeField, Required]
-		[BoxGroup("Gameplay")]
-		private Transform _fabricParent;
-		[SerializeField, Required]
-		[BoxGroup("Gameplay")]
-		private Transform _rotationCenter;
 		[SerializeField]
 		[BoxGroup("Gameplay")]
 		private float _fabricMaxSpeed = 1f;
 		[SerializeField]
 		[BoxGroup("Gameplay")]
 		private float _rotationSpeed = 1f;
-		[SerializeField]
+		[SerializeField, Required]
 		[BoxGroup("Gameplay")]
 		private AnimationCurve _accelerationCurve = new AnimationCurve(new []{new Keyframe(0,0), new Keyframe(1,1)});
-		[SerializeField]
+		[SerializeField, Required]
 		[BoxGroup("Gameplay")]
 		private float _speedSmoothTime;
-		[SerializeField]
+		[SerializeField, Required]
 		[BoxGroup("Gameplay")]
 		private float _speedSmoothTimeMaxSpeed = 100f;
-		[SerializeField]
-		[BoxGroup("Gameplay")]
+		[SerializeField, Required]
+		[BoxGroup("Gameplay References")]
+		private Transform _fabricParent;
+		[SerializeField, Required]
+		[BoxGroup("Gameplay References")]
+		private Transform _rotationCenter;
+		[SerializeField, Required]
+		[BoxGroup("Gameplay References")]
 		private Hurtable _needle;
-		[SerializeField]
-		[BoxGroup("Gameplay")]
+		[SerializeField, Required]
+		[BoxGroup("Gameplay References")]
 		private ParticleSystem _brokenParticleSystem;
-		[SerializeField]
-		[BoxGroup("Gameplay")]
+		[SerializeField, Required]
+		[BoxGroup("Gameplay References")]
 		private GameObject _todoMessage;
+		[SerializeField, Required]
+		[BoxGroup("Gameplay References")]
+		private PinManager _pinManager;
 		
 		[SerializeField, Required]
 		[BoxGroup("Foot")]
@@ -154,6 +157,7 @@ namespace Moreno.SewingGame
 		{
 			ResetMachine();
 			_pathEvaluator.SetPath(level.PathData);
+			_pinManager.PrepareLevel(level);
 		}
 
 		public void BreakMachine()
@@ -200,7 +204,6 @@ namespace Moreno.SewingGame
 
 		private bool GetPowerKeys()
 		{
-			if (_broken) return false;
 			int previousKeyCount = _pressedKeys.Count;
 			foreach (KeyCode key in _possiblePowerKeys)
 			{
@@ -218,6 +221,7 @@ namespace Moreno.SewingGame
 			}
 
 			int currentKeyCount = _pressedKeys.Count;
+			if (_broken) currentKeyCount = 0;
 
 			if (previousKeyCount != currentKeyCount)
 			{
@@ -233,6 +237,7 @@ namespace Moreno.SewingGame
 				}
 			}
 
+			if (_broken) return false;
 			_currentKeysPressed = currentKeyCount;
 			return currentKeyCount > 0;
 		}

@@ -5292,6 +5292,37 @@ Transform:
   - {fileID: 5673287977490351875}
   m_Father: {fileID: 283355894333510582}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &3058224816947693503
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4478463133342938250}
+  m_Layer: 0
+  m_Name: PinParent
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4478463133342938250
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3058224816947693503}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2415676627725036491}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3841728678277342877
 GameObject:
   m_ObjectHideFlags: 0
@@ -5633,6 +5664,7 @@ Transform:
   - {fileID: 8169793727935475859}
   - {fileID: 7375479362616462669}
   - {fileID: 4962936115909422580}
+  - {fileID: 4478463133342938250}
   m_Father: {fileID: 283355894333510582}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5015074420826327088
@@ -5865,8 +5897,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _sewingMachineAudio: {fileID: 2834334648521235529}
-  _fabricParent: {fileID: 2415676627725036491}
-  _rotationCenter: {fileID: 8814031644354071142}
   _fabricMaxSpeed: 10
   _rotationSpeed: 7.5
   _accelerationCurve:
@@ -5895,9 +5925,12 @@ MonoBehaviour:
     m_RotationOrder: 4
   _speedSmoothTime: 0.1
   _speedSmoothTimeMaxSpeed: 100
+  _fabricParent: {fileID: 2415676627725036491}
+  _rotationCenter: {fileID: 8814031644354071142}
   _needle: {fileID: 7754697204195025842}
   _brokenParticleSystem: {fileID: 8876893913098761276}
   _todoMessage: {fileID: 2736329977301593620}
+  _pinManager: {fileID: 2028110882032766988}
   _footDownAnimationBehaviour: {fileID: 1863895180319037094}
   _footUpAnimationBehaviour: {fileID: 3869797529291300127}
   _footDownSound: {fileID: 8850711765487979991}
@@ -6063,6 +6096,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1367389605948918402}
+  - component: {fileID: 2028110882032766988}
   m_Layer: 0
   m_Name: Pin Manager
   m_TagString: Untagged
@@ -6085,6 +6119,21 @@ Transform:
   m_Children: []
   m_Father: {fileID: 283355894333510582}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2028110882032766988
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9208032382804849598}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7f7223dfdd7240639e1b0014458fcf5c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _pinPrefab: {fileID: 8307883399367655104, guid: 84a9cb99ff43e1f468178027ad23a99a, type: 3}
+  _pinParent: {fileID: 4478463133342938250}
+  _pathEvaluater: {fileID: 3659641258739584784}
 --- !u!1001 &8383305376132769984
 PrefabInstance:
   m_ObjectHideFlags: 0

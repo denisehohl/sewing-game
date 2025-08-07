@@ -1,4 +1,5 @@
 ﻿using Ateo.Common;
+using Sirenix.OdinInspector;
 using UnityEngine;
 
 namespace Moreno.SewingGame
@@ -39,6 +40,7 @@ namespace Moreno.SewingGame
 
 		#region Public Methods
 
+		[Button]
 		public void StartLevel(LevelSetting level)
 		{
 			SewingMachineController.Instance.PrepareLevel(level);
