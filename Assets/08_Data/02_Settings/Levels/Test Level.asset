@@ -40,6 +40,6 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   _spawnPins: 1
-  _pinSpawnDistanceRange: {x: 10, y: 15}
+  _pinSpawnDistanceRange: {x: 5, y: 7}
   _canPinsFlip: 1
-  _pinRandomRotationRange: 74.8
+  _pinRandomRotationRange: 17.5
