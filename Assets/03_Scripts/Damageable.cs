@@ -14,6 +14,7 @@ namespace Moreno.SewingGame
 		#region Event Callbacks
 		public void TakeDamage(Hurtable hurtable)
 		{
+			if(!enabled) return;
 			OnDamageTaken?.Invoke(hurtable);
 		}
 		

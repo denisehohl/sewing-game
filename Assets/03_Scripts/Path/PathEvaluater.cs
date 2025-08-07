@@ -174,6 +174,8 @@ namespace Moreno.SewingGame.Path
 			}
 
 			target.Points = finalList;
+			
+			target.CalculateDistances();
 
 #if UNITY_EDITOR
 			UnityEditor.EditorUtility.SetDirty(target);

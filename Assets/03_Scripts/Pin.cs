@@ -89,6 +89,7 @@ namespace Moreno.SewingGame
 					_routine = null;
 				}
 				//pinhead clicked
+				_damageable.enabled = false;
 				_routine = StartCoroutine(CheckIfDraggedInDirection());
 			}
 
