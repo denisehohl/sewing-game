@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Ateo.Animation;
 using Ateo.Common;
+using DG.Tweening;
 using FMODUnity;
 using Moreno.SewingGame.Audio;
 using Moreno.SewingGame.Path;
@@ -170,7 +171,8 @@ namespace Moreno.SewingGame
 			_brokenParticleSystem.Play(true);
 			_todoMessage.SetActive(true);
 			_pathEvaluator.AccuracyTrend = 0;
-
+			
+			MoveNeedleToOutPoint();
 			StartCoroutine(Routine());
 			return;
 
@@ -200,6 +202,23 @@ namespace Moreno.SewingGame
 		{
 			EvaluateCurrentSpeed(value > 0);
 			UpdateAudioSpeed();
+		}
+		
+		public void MoveNeedleToOutPoint()
+		{
+			StartCoroutine(Routine());
+			return;
+			
+			IEnumerator Routine()
+			{
+				while (_previousNormalizedNeedleAnimationTime < 0.99f)
+				{
+					_needleAnimationTime += 0.1f;
+					AnimateNeedle();
+					AnimateThreadHolder();
+					yield return null;
+				}
+			}
 		}
 
 		#endregion
@@ -275,14 +294,6 @@ namespace Moreno.SewingGame
 		{
 			float speed = _footDown ? _currentSpeed : -1;
 			_fabricRotator.Rotate(Vector3.up,direction*speed*_rotationSpeed);
-			return;
-			
-			//_fabricParent.RotateAround(_rotationCenter.position, Vector3.up, direction * _currentSpeed);
-			_fabricParent.RotateAroundCustomPivot(
-				_fabricParent.InverseTransformPoint(MouseWorldPointer.Instance.CurrentPosition),
-				_rotationCenter.position,
-				Vector3.up,
-				direction * speed * _rotationSpeed);
 		}
 
 		private void MoveFabricForward()
@@ -334,8 +345,13 @@ namespace Moreno.SewingGame
 		private void AnimateBetweenPoints(float time, Transform target, Vector2 localYBounds, out float normalizedTime)
 		{
 			normalizedTime = GetNormalizedSinValue(time);
+			SetAnimationBetweenBounds(normalizedTime, target, localYBounds);
+		}
+
+		private void SetAnimationBetweenBounds(float lerp,Transform target, Vector2 localYBounds)
+		{
 			var vector3 = target.localPosition;
-			float y = Mathf.Lerp(localYBounds.x, localYBounds.y, normalizedTime);
+			float y = Mathf.Lerp(localYBounds.x, localYBounds.y, lerp);
 			vector3.y = y;
 			target.localPosition = vector3;
 		}
