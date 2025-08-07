@@ -8,8 +8,10 @@ namespace Moreno.SewingGame.Path
 	{
 		#region private Serialized Variables
 
-		[SerializeField]
+		[SerializeField, Required]
 		private LineRenderer _pathVisualizer;
+		[SerializeField, Required]
+		private LineRenderer _playerPathVisualizer;
 
 		#endregion
 
@@ -47,6 +49,7 @@ namespace Moreno.SewingGame.Path
 		{
 			_currentPath = null;
 			_accumulatedDistanceOffset = 0;
+			ResetPlayerPathVisualizer();
 		}
 
 		public void CheckWorldPointPathAccuracy(Vector3 positionToCheck)
@@ -55,8 +58,7 @@ namespace Moreno.SewingGame.Path
 			Vector2 localPoint = TranslateWorldToPathPoint(positionToCheck);
 			float distance = _currentPath.Points.GetDistanceToClosestPointOnPath(localPoint, out var pointOnTrack);
 			
-			DebugExtension.DrawMarker(_pathVisualizer.transform.TransformPoint(localPoint),1f,Color.green);
-			DebugExtension.DrawMarker(_pathVisualizer.transform.TransformPoint(pointOnTrack),1f,Color.red);
+			AddPointToPlayerPath(localPoint);
 			
 			_accumulatedDistanceOffset += distance;
 		}
@@ -65,10 +67,21 @@ namespace Moreno.SewingGame.Path
 
 		#region Private Methods
 
+		private void AddPointToPlayerPath(Vector2 localPoint)
+		{
+			int count = _playerPathVisualizer.positionCount++;
+			_playerPathVisualizer.SetPosition(count,localPoint);
+		}
+
+		private void ResetPlayerPathVisualizer()
+		{
+			_playerPathVisualizer.positionCount = 1;
+			AddPointToPlayerPath(Vector2.zero);
+		}
+
 		private Vector2 TranslateWorldToPathPoint(Vector3 worldPosition)
 		{
 			Vector3 point = _pathVisualizer.transform.InverseTransformPoint(worldPosition);
-			DebugExtension.DrawMarker(point,1,Color.blue);
 			return new Vector2(point.x, point.y);
 		}
 
