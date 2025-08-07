@@ -145,7 +145,7 @@ namespace Moreno.SewingGame
 
 		#region Monobehaviour Callbacks
 
-		protected override void OnStart()
+		protected override void OnPublish()
 		{
 			_fabricStartPosition = _fabricParent.position;
 		}
