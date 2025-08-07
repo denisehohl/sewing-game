@@ -73,6 +73,10 @@ namespace Moreno.SewingGame
 		[SerializeField, Required]
 		[BoxGroup("Needle")]
 		private Transform _needleTransform;
+
+		[SerializeField, Required]
+		[BoxGroup("Needle")]
+		private NeedleManager _needleManager;
 		[SerializeField]
 		[BoxGroup("Needle")]
 		private Vector2 _needleTransformMinMaxY;
@@ -171,14 +175,14 @@ namespace Moreno.SewingGame
 			_brokenParticleSystem.Play(true);
 			_todoMessage.SetActive(true);
 			_pathEvaluator.AccuracyTrend = 0;
+			_needleManager.SetNeedleBrokenVisual(true);
 			
 			MoveNeedleToOutPoint();
-			StartCoroutine(Routine());
+			StartCoroutine(_needleManager.StartReplaceTask(Callback));
 			return;
 
-			IEnumerator Routine()
+			void Callback()
 			{
-				yield return new WaitForSeconds(5);
 				_broken = false;
 				_brokenParticleSystem.Stop(true,ParticleSystemStopBehavior.StopEmitting);
 				_todoMessage.SetActive(false);
@@ -191,6 +195,7 @@ namespace Moreno.SewingGame
 			_fabricParent.position = _fabricStartPosition;
 			_fabricParent.rotation = Quaternion.identity;
 			_pathEvaluator.ResetValues();
+			_needleManager.SetNeedleBrokenVisual(false);
 		}
 
 		public void StopMachine()
