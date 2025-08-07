@@ -26,7 +26,9 @@ namespace Moreno.SewingGame
 		private Vector3 _mousePressedStartWorldPosition;
 		private Vector3 _currentPosition, _previousPosition, _deltaPosition;
 		private bool _mousePressed = true;
+		private bool _pressedDownOnFabric = false;
 		private GameObject _currentInteractionObject;
+		private Plane _backupPlane;
 		#endregion
 
 		#region Properties
@@ -51,6 +53,11 @@ namespace Moreno.SewingGame
 		#endregion
 
 		#region Monobehaviour Callbacks
+
+		protected override void OnStart()
+		{
+			_backupPlane = new Plane();
+		}
 
 		private void Update()
 		{
@@ -86,10 +93,10 @@ namespace Moreno.SewingGame
 		{
 			_previousPosition = _currentPosition;
 			GameObject _previousObject = _currentInteractionObject;
-			if (TryMouseRaycast(out RaycastHit hit))
+			var ray = GetCameraRay();
+			if (TryMouseRaycast(ray, out RaycastHit hit))
 			{
-				_currentPosition = hit.point;
-				_pointer.position = _currentPosition;
+				SetCurrentPosition(hit.point);
 				var obj = hit.collider.gameObject;
 				_currentInteractionObject = obj;
 				bool isFabric = _fabricLayer.Contains(obj.layer);
@@ -100,6 +107,9 @@ namespace Moreno.SewingGame
 					_mousePressed = true;
 					_mousePressedStartWorldPosition = hit.point;
 
+					_pressedDownOnFabric = isFabric;
+					PositionPlane(_currentInteractionObject.transform);
+
 					OnObjectClicked?.Invoke(_currentInteractionObject);
 				}
 
@@ -108,20 +118,47 @@ namespace Moreno.SewingGame
 					OnInteractableEntered?.Invoke(_currentInteractionObject);
 				}
 			}
+			else
+			{
+				if (_pressedDownOnFabric)
+				{
+					if(_backupPlane.Raycast(ray, out var enter))
+					{
+						Vector3 hitPoint = ray.GetPoint(enter);
+						SetCurrentPosition(hitPoint);
+					}
+				}
+			}
 			
 			if (Input.GetMouseButtonUp(0))
 			{
 				_mousePressed = false;
+				_pressedDownOnFabric = false;
 			}
 
 			_deltaPosition = _currentPosition - _previousPosition;
 
 		}
 
-		public bool TryMouseRaycast(out RaycastHit info)
+		private void SetCurrentPosition(Vector3 position)
 		{
-			Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+			_currentPosition = position;
+			_pointer.position = position;
+		}
+
+		private Ray GetCameraRay()
+		{
+			return Camera.main.ScreenPointToRay(Input.mousePosition);
+		}
+
+		public bool TryMouseRaycast(Ray ray, out RaycastHit info)
+		{
 			return Physics.Raycast(ray, out info, 10f);
+		}
+
+		private void PositionPlane(Transform target)
+		{
+			_backupPlane.SetNormalAndPosition(target.up,target.position);
 		}
 
 		#endregion
