@@ -101,7 +101,7 @@ namespace Moreno.SewingGame
 		private int _currentKeysPressed;
 		private float _needleAnimationTime = 0;
 		private float _currentRotation = 0;
-		private bool _footDownState;
+		private bool _footDown;
 		private float _previousNormalizedNeedleAnimationTime;
 		private bool _broken = false;
 		private float _lastNeedleStitchTime;
@@ -243,9 +243,6 @@ namespace Moreno.SewingGame
 			AnimateNeedle();
 			AnimateThreadHolder();
 			UpdateAudioSpeed();
-			
-			if(!gasDown) return;
-			if(MouseWorldPointer.Instance == null) return;
 
 			float rotationDirection = MouseWorldPointer.Instance.TryDetectMouseDragDirection();
 			RotateFabric(rotationDirection);
@@ -253,12 +250,13 @@ namespace Moreno.SewingGame
 
 		private void RotateFabric(float direction)
 		{
+			float speed = _footDown ? _currentSpeed : -1;
 			//_fabricParent.RotateAround(_rotationCenter.position, Vector3.up, direction * _currentSpeed);
 			_fabricParent.RotateAroundCustomPivot(
 				_fabricParent.InverseTransformPoint(MouseWorldPointer.Instance.CurrentPosition),
 				_rotationCenter.position,
 				Vector3.up,
-				direction * _currentSpeed * _rotationSpeed);
+				direction * speed * _rotationSpeed);
 		}
 
 		private void MoveFabricForward()
@@ -269,6 +267,11 @@ namespace Moreno.SewingGame
 
 		private void EvaluateCurrentSpeed(bool gasDown)
 		{
+			if (!_footDown)
+			{
+				_currentSpeed = 0;
+				return;
+			}
 			_targetSpeed = gasDown 
 				? -_accelerationCurve.Evaluate(_currentKeysPressed) 
 				: 0;
@@ -315,13 +318,13 @@ namespace Moreno.SewingGame
 
 		private void ToggleFootState()
 		{
-			_footDownState = !_footDownState;
+			_footDown = !_footDown;
 			UpdateFootAnimation();
 		}
 
 		private void SetFootState(bool value, bool immediate = false)
 		{
-			_footDownState = value;
+			_footDown = value;
 			UpdateFootAnimation(immediate);
 		}
 
@@ -329,7 +332,7 @@ namespace Moreno.SewingGame
 		{
 			if (immediate)
 			{
-				if (_footDownState)
+				if (_footDown)
 				{
 					_footDownAnimationBehaviour.ExecuteAnimationImmediate();
 				}
@@ -340,7 +343,7 @@ namespace Moreno.SewingGame
 				return;
 			}
 			
-			if (_footDownState)
+			if (_footDown)
 			{
 				_footDownAnimationBehaviour.Execute(false);
 				_footDownSound.PlayEvent();
