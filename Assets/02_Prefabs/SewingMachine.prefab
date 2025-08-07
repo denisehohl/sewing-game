@@ -5930,7 +5930,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _sewingMachineAudio: {fileID: 2834334648521235529}
   _fabricMaxSpeed: 10
-  _rotationSpeed: 7.5
+  _rotationSpeed: 15
   _accelerationCurve:
     serializedVersion: 2
     m_Curve:
