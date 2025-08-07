@@ -48,6 +48,7 @@ namespace Moreno.SewingGame
 		#region Delegates & Events
 
 		public static  event Action<GameObject> OnObjectClicked;
+		public static event Action OnMouseRelease; 
 		public static  event Action<GameObject> OnInteractableEntered;
 
 		#endregion
@@ -92,7 +93,7 @@ namespace Moreno.SewingGame
 		private void TryDetectMouseInput()
 		{
 			_previousPosition = _currentPosition;
-			GameObject _previousObject = _currentInteractionObject;
+			GameObject previousObject = _currentInteractionObject;
 			var ray = GetCameraRay();
 			if (TryMouseRaycast(ray, out RaycastHit hit))
 			{
@@ -113,7 +114,7 @@ namespace Moreno.SewingGame
 					OnObjectClicked?.Invoke(_currentInteractionObject);
 				}
 
-				if (isInteractable && _previousObject != _currentInteractionObject)
+				if (isInteractable && previousObject != _currentInteractionObject)
 				{
 					OnInteractableEntered?.Invoke(_currentInteractionObject);
 				}
@@ -134,9 +135,9 @@ namespace Moreno.SewingGame
 			{
 				_mousePressed = false;
 				_pressedDownOnFabric = false;
+				OnMouseRelease?.Invoke();
 			}
 
-			_deltaPosition = _currentPosition - _previousPosition;
 
 		}
 
@@ -144,6 +145,8 @@ namespace Moreno.SewingGame
 		{
 			_currentPosition = position;
 			_pointer.position = position;
+			
+			_deltaPosition = _currentPosition - _previousPosition;
 		}
 
 		private Ray GetCameraRay()
@@ -153,7 +156,7 @@ namespace Moreno.SewingGame
 
 		public bool TryMouseRaycast(Ray ray, out RaycastHit info)
 		{
-			return Physics.Raycast(ray, out info, 10f);
+			return Physics.Raycast(ray, out info, 20f);
 		}
 
 		private void PositionPlane(Transform target)

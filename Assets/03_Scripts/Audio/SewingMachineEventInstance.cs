@@ -65,8 +65,8 @@ namespace Moreno.SewingGame.Audio
 		private void Init()
 		{
 			_eventInstance = RuntimeManager.CreateInstance(_eventReference);
-			_speedParameter = CacheParameterId(_eventInstance,"Speed");
-			_activeParameter = CacheParameterId(_eventInstance,"State");
+			_speedParameter = _eventInstance.GetParameterId("Speed");
+			_activeParameter = _eventInstance.GetParameterId("State");
 
 			_eventInstance.StartAttached(transform);
 			StopSound();
@@ -78,12 +78,7 @@ namespace Moreno.SewingGame.Audio
 			_eventInstance.release();
 		}
 
-		private PARAMETER_ID CacheParameterId(EventInstance instance, string parameterName)
-		{
-			instance.getDescription(out EventDescription pitchEventDescription);
-			pitchEventDescription.getParameterDescriptionByName(parameterName, out PARAMETER_DESCRIPTION pitchParameterDescription);
-			return pitchParameterDescription.id;
-		}
+		
 
 		#endregion
 	}

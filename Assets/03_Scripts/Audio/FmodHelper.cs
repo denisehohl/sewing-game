@@ -61,5 +61,12 @@ namespace Moreno.SewingGame.Audio
             eventInstance.start();
             RuntimeManager.AttachInstanceToGameObject(eventInstance, transform);
         }
+        
+        public static PARAMETER_ID GetParameterId(this EventInstance instance, string parameterName)
+        {
+            instance.getDescription(out EventDescription pitchEventDescription);
+            pitchEventDescription.getParameterDescriptionByName(parameterName, out PARAMETER_DESCRIPTION pitchParameterDescription);
+            return pitchParameterDescription.id;
+        }
     }
 }
