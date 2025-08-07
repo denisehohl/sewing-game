@@ -52,9 +52,6 @@ namespace Moreno.SewingGame
 		private ParticleSystem _brokenParticleSystem;
 		[SerializeField, Required]
 		[BoxGroup("Gameplay References")]
-		private GameObject _todoMessage;
-		[SerializeField, Required]
-		[BoxGroup("Gameplay References")]
 		private PinManager _pinManager;
 		
 		[SerializeField, Required]
@@ -96,6 +93,8 @@ namespace Moreno.SewingGame
 		[SerializeField]
 		[BoxGroup("Thread")]
 		private Vector2 _threadHolderTransformMinMaxY;
+
+		public EventReference _MachineBrokenEvent;
 
 		[SerializeField]
 		[BoxGroup("Path")]
@@ -148,7 +147,6 @@ namespace Moreno.SewingGame
 
 		protected override void OnStart()
 		{
-			_todoMessage.SetActive(false);
 			_fabricStartPosition = _fabricParent.position;
 		}
 
@@ -173,9 +171,9 @@ namespace Moreno.SewingGame
 			StopMachine();
 			_broken = true;
 			_brokenParticleSystem.Play(true);
-			_todoMessage.SetActive(true);
 			_pathEvaluator.AccuracyTrend = 0;
 			_needleManager.SetNeedleBrokenVisual(true);
+			RuntimeManager.PlayOneShot(_MachineBrokenEvent);
 			
 			MoveNeedleToOutPoint();
 			StartCoroutine(_needleManager.StartReplaceTask(Callback));
@@ -185,7 +183,6 @@ namespace Moreno.SewingGame
 			{
 				_broken = false;
 				_brokenParticleSystem.Stop(true,ParticleSystemStopBehavior.StopEmitting);
-				_todoMessage.SetActive(false);
 			}
 		}
 
@@ -195,6 +192,7 @@ namespace Moreno.SewingGame
 			_fabricParent.position = _fabricStartPosition;
 			_fabricParent.rotation = Quaternion.identity;
 			_pathEvaluator.ResetValues();
+			_pinManager.RemoveAllPins();
 			_needleManager.SetNeedleBrokenVisual(false);
 		}
 

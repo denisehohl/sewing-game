@@ -50,7 +50,7 @@ namespace Moreno.SewingGame.Audio
 
 		private void Start()
 		{
-			StartDynamicMusic();
+			StartRadio();
 		}
 
 		private void OnEnable()

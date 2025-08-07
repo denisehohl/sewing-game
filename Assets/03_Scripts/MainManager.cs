@@ -1,4 +1,5 @@
-﻿using Ateo.Common;
+﻿using System;
+using Ateo.Common;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
@@ -27,6 +28,8 @@ namespace Moreno.SewingGame
 
 		#region Delegates & Events
 
+		public static event Action OnLevelStarted;
+
 		#endregion
 
 		#region Monobehaviour Callbacks
@@ -51,6 +54,7 @@ namespace Moreno.SewingGame
 		{
 			Context.CurrentLevel = level;
 			SewingMachineController.Instance.PrepareLevel();
+			OnLevelStarted?.Invoke();
 		}
 
 		#endregion

@@ -30,6 +30,13 @@ namespace Moreno.SewingGame
 		[SerializeField, ShowIf(nameof(_showPinRotationOption)), Range(0f,90f)]
 		private float _pinRandomRotationRange;
 
+		[SerializeField]
+		private Vector2 _threadingRandomRange;
+		[SerializeField]
+		private float _threadingSmoothTime;
+		[SerializeField]
+		private float _threadingMaxSmoothSpeed;
+
 		public float MachineDirectionRange => _machineDirectionRange;
 
 		public float MachineDirectionChangeRange => _machineDirectionChangeRange;
@@ -45,6 +52,12 @@ namespace Moreno.SewingGame
 		public PathData PathData => _pathData;
 
 		private bool _showPinRotationOption => _spawnPins && _canPinsFlip;
+
+		public Vector2 ThreadingRandomRange => _threadingRandomRange;
+
+		public float ThreadingSmoothTime => _threadingSmoothTime;
+
+		public float ThreadingMaxSmoothSpeed => _threadingMaxSmoothSpeed;
 
 		public float GetAccuracyScoreForDistanceToPath(float distance)
 		{
