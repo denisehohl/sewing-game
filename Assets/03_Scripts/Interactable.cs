@@ -47,6 +47,12 @@ namespace Moreno.SewingGame
 
 		#region Public Methods
 
+		public void ClearListeners()
+		{
+			OnClicked = null;
+			OnReleased = null;
+		}
+
 		#endregion
 
 		#region Private Methods

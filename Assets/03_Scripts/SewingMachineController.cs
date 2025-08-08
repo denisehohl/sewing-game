@@ -52,9 +52,6 @@ namespace Moreno.SewingGame
 		private ParticleSystem _brokenParticleSystem;
 		[SerializeField, Required]
 		[BoxGroup("Gameplay References")]
-		private GameObject _todoMessage;
-		[SerializeField, Required]
-		[BoxGroup("Gameplay References")]
 		private PinManager _pinManager;
 		
 		[SerializeField, Required]
@@ -73,6 +70,10 @@ namespace Moreno.SewingGame
 		[SerializeField, Required]
 		[BoxGroup("Needle")]
 		private Transform _needleTransform;
+
+		[SerializeField, Required]
+		[BoxGroup("Needle")]
+		private NeedleManager _needleManager;
 		[SerializeField]
 		[BoxGroup("Needle")]
 		private Vector2 _needleTransformMinMaxY;
@@ -93,6 +94,8 @@ namespace Moreno.SewingGame
 		[BoxGroup("Thread")]
 		private Vector2 _threadHolderTransformMinMaxY;
 
+		public EventReference _MachineBrokenEvent;
+
 		[SerializeField]
 		[BoxGroup("Path")]
 		private PathEvaluater _pathEvaluator;
@@ -107,7 +110,7 @@ namespace Moreno.SewingGame
 		private float _targetSpeed;
 		private int _currentKeysPressed;
 		private float _needleAnimationTime = 0;
-		private float _currentRotation = 0;
+		private float _currentRotationSpeed = 0;
 		private bool _footDown;
 		private float _previousNormalizedNeedleAnimationTime;
 		private bool _broken = false;
@@ -134,6 +137,12 @@ namespace Moreno.SewingGame
 			}
 		}
 
+		public bool FootDown => _footDown;
+
+		public float CurrentRotationSpeed => _currentRotationSpeed;
+
+		public float CurrentTraveledDistance => _needleAnimationTime;
+
 		#endregion
 
 		#region Delegates & Events
@@ -142,9 +151,8 @@ namespace Moreno.SewingGame
 
 		#region Monobehaviour Callbacks
 
-		protected override void OnStart()
+		protected override void OnPublish()
 		{
-			_todoMessage.SetActive(false);
 			_fabricStartPosition = _fabricParent.position;
 		}
 
@@ -169,19 +177,18 @@ namespace Moreno.SewingGame
 			StopMachine();
 			_broken = true;
 			_brokenParticleSystem.Play(true);
-			_todoMessage.SetActive(true);
 			_pathEvaluator.AccuracyTrend = 0;
+			_needleManager.SetNeedleBrokenVisual(true);
+			RuntimeManager.PlayOneShot(_MachineBrokenEvent);
 			
 			MoveNeedleToOutPoint();
-			StartCoroutine(Routine());
+			StartCoroutine(_needleManager.StartReplaceTask(Callback));
 			return;
 
-			IEnumerator Routine()
+			void Callback()
 			{
-				yield return new WaitForSeconds(5);
 				_broken = false;
 				_brokenParticleSystem.Stop(true,ParticleSystemStopBehavior.StopEmitting);
-				_todoMessage.SetActive(false);
 			}
 		}
 
@@ -191,6 +198,8 @@ namespace Moreno.SewingGame
 			_fabricParent.position = _fabricStartPosition;
 			_fabricParent.rotation = Quaternion.identity;
 			_pathEvaluator.ResetValues();
+			_pinManager.RemoveAllPins();
+			_needleManager.SetNeedleBrokenVisual(false);
 		}
 
 		public void StopMachine()
@@ -293,6 +302,7 @@ namespace Moreno.SewingGame
 		private void RotateFabric(float direction)
 		{
 			float speed = _footDown ? _currentSpeed : -1;
+			_currentRotationSpeed = direction * speed * _rotationSpeed;
 			_fabricRotator.Rotate(Vector3.up,direction*speed*_rotationSpeed);
 		}
 

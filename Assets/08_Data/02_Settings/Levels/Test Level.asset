@@ -43,3 +43,6 @@ MonoBehaviour:
   _pinSpawnDistanceRange: {x: 5, y: 7}
   _canPinsFlip: 1
   _pinRandomRotationRange: 17.5
+  _threadingRandomRange: {x: 0.1, y: 0.78}
+  _threadingSmoothTime: 0.2
+  _threadingMaxSmoothSpeed: 3.58

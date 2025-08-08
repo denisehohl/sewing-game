@@ -11,6 +11,8 @@ namespace Moreno.SewingGame
 	public class LevelSetting : ScriptableObject
 	{
 		[SerializeField]
+		private bool _isTutorial;
+		[SerializeField]
 		private float _machineDirectionRange;
 		[SerializeField]
 		private float _machineDirectionChangeRange;
@@ -32,6 +34,14 @@ namespace Moreno.SewingGame
 		[SerializeField, Range(0f,10f)]
 		private float _lineWidth = 0.01f;
 
+		[SerializeField]
+		private Vector2 _threadingRandomRange;
+		[SerializeField]
+		private float _threadingSmoothTime;
+		[SerializeField]
+		private float _threadingMaxSmoothSpeed;
+
+		public bool IsTutorial => _isTutorial;
 		public float MachineDirectionRange => _machineDirectionRange;
 
 		public float MachineDirectionChangeRange => _machineDirectionChangeRange;
@@ -48,6 +58,12 @@ namespace Moreno.SewingGame
 		public PathData PathData => _pathData;
 
 		private bool _showPinRotationOption => _spawnPins && _canPinsFlip;
+
+		public Vector2 ThreadingRandomRange => _threadingRandomRange;
+
+		public float ThreadingSmoothTime => _threadingSmoothTime;
+
+		public float ThreadingMaxSmoothSpeed => _threadingMaxSmoothSpeed;
 
 		public float GetAccuracyScoreForDistanceToPath(float distance)
 		{

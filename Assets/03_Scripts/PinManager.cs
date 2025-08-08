@@ -42,7 +42,19 @@ namespace Moreno.SewingGame
 			{
 				AddPinAtPathDistance(distance);
 			}
-			
+		}
+		
+		public void RemoveAllPins()
+		{
+			for (int i = _instances.Count - 1; i >= 0; i--)
+			{
+				var instance = _instances[i];
+				if (instance != null)
+				{
+					Destroy(instance);
+				}
+			}
+			_instances.Clear();
 		}
 
 		#endregion
@@ -71,19 +83,6 @@ namespace Moreno.SewingGame
 			t.rotation = r;
 			
 			_instances.Add(instance);
-		}
-
-		private void RemoveAllPins()
-		{
-			for (int i = _instances.Count - 1; i >= 0; i--)
-			{
-				var instance = _instances[i];
-				if (instance != null)
-				{
-					Destroy(instance);
-				}
-			}
-			_instances.Clear();
 		}
 
 		#endregion
