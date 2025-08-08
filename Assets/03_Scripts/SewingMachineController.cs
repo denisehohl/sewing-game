@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Ateo.Animation;
 using Ateo.Common;
+using Ateo.StateManagement;
 using DG.Tweening;
 using FMODUnity;
 using Moreno.SewingGame.Audio;
@@ -158,6 +159,7 @@ namespace Moreno.SewingGame
 
 		private void Update()
 		{
+			if(StateManager.CurrentEnum != StatesEnum.InGame) return;
 			CheckPlayerInput();
 		}
 

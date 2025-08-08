@@ -12,6 +12,17 @@ namespace Moreno.SewingGame
 	{
 		[SerializeField]
 		private bool _isTutorial;
+
+		[SerializeField, BoxGroup("Scoring")]
+		private float _perfectAccuracyRange;
+		[SerializeField, BoxGroup("Scoring")]
+		private float _imperfectAccuracyRange;
+
+		[SerializeField, BoxGroup("Scoring")]
+		private float _perfectDamageTaken;
+		[SerializeField, BoxGroup("Scoring")]
+		private float _imperfectDamageTaken;
+		
 		[SerializeField]
 		private float _machineDirectionRange;
 		[SerializeField]
@@ -40,6 +51,8 @@ namespace Moreno.SewingGame
 		private float _threadingMaxSmoothSpeed;
 
 		public bool IsTutorial => _isTutorial;
+
+		public string LevelName => name;
 		public float MachineDirectionRange => _machineDirectionRange;
 
 		public float MachineDirectionChangeRange => _machineDirectionChangeRange;
@@ -65,6 +78,15 @@ namespace Moreno.SewingGame
 		public float GetAccuracyScoreForDistanceToPath(float distance)
 		{
 			return _accuracyScorePerDistance.Evaluate(distance);
+		}
+
+		public float GetAccuracyPercentage(float accuracy)
+		{
+			return Mathf.InverseLerp(_imperfectAccuracyRange, _perfectAccuracyRange, accuracy) * 100f;
+		}
+		public float GetCleanPercentage(float accuracy)
+		{
+			return Mathf.InverseLerp(_imperfectDamageTaken, _perfectDamageTaken, accuracy) * 100f;
 		}
 	}
 }

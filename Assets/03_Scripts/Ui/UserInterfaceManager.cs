@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace Moreno.SewingGame.Ui
 {
-    public class UiManager : ComponentPublishBehaviour<UiManager>
+    public class UserInterfaceManager : ComponentPublishBehaviour<UserInterfaceManager>
     {
         [SerializeField]
         private UIView _main;
@@ -19,11 +19,10 @@ namespace Moreno.SewingGame.Ui
         [SerializeField]
         private UIView _result;
 
-        private List<UIView> _activeViews;
-        private List<UIView> _showViews;
-        private List<UIView> _hideViews;
-        private List<UIView> _showViewsImmediate;
-        private List<UIView> _hideViewsImmediate;
+        private List<UIView> _activeViews = new List<UIView>();
+        private List<UIView> _showViews = new List<UIView>();
+        private List<UIView> _showViewsImmediate = new List<UIView>();
+        private List<UIView> _hideViewsImmediate = new List<UIView>();
         
         protected override void OnPublish()
         {

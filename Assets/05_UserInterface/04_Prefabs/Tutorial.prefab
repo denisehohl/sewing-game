@@ -70,8 +70,9 @@ MonoBehaviour:
     GameObject: {fileID: 388518092705821689}
   - Step: 7
     GameObject: {fileID: 3399632453283764395}
-  _minTraveledDistanceToCompleteLineStep: 400
-  _minCompletedTime: 1
+  _minTraveledDistanceToCompleteLineStep: 50
+  _minCompletedSpeedTime: 3
+  _minCompletedRotationTime: 1
 --- !u!1001 &31932988053563518
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -34,5 +34,10 @@ namespace Moreno.SewingGame.Ui.Views
         {
             
         }
+        
+        #region Event Callbacks
+        
+
+        #endregion
     }
 }
