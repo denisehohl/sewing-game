@@ -14,14 +14,14 @@ namespace Moreno.SewingGame
 		private bool _isTutorial;
 
 		[SerializeField, BoxGroup("Scoring")]
-		private float _perfectAccuracyRange;
+		private float _perfectAccuracyRange = 5;
 		[SerializeField, BoxGroup("Scoring")]
-		private float _imperfectAccuracyRange;
+		private float _imperfectAccuracyRange = 50;
 
 		[SerializeField, BoxGroup("Scoring")]
-		private float _perfectDamageTaken;
+		private float _perfectDamageTaken = 0;
 		[SerializeField, BoxGroup("Scoring")]
-		private float _imperfectDamageTaken;
+		private float _imperfectDamageTaken = 20;
 		
 		[SerializeField]
 		private float _machineDirectionRange;
