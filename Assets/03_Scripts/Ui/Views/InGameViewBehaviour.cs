@@ -1,4 +1,5 @@
-﻿using Ateo.UI;
+﻿using Ateo.StateManagement;
+using Ateo.UI;
 using UnityEngine;
 
 namespace Moreno.SewingGame.Ui.Views
@@ -28,6 +29,14 @@ namespace Moreno.SewingGame.Ui.Views
         private void UnsubscribeFromButtons()
         {
             
+        }
+        
+        private void Update()
+        {
+            if (Input.GetKeyDown(KeyCode.Escape))
+            {
+                StateManager.ChangeTo(StatesEnum.Paused);
+            }
         }
 
         private void Init()

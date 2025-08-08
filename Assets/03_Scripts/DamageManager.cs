@@ -18,12 +18,14 @@ namespace Moreno.SewingGame
 		#region private Variables
 
 		private float _lastTimeDamageTaken;
+		private float _totalDamageTaken = 0;
 
 		#endregion
 
 		#region Properties
 
 		public float LastTimeDamageTaken => _lastTimeDamageTaken;
+		public float TotalDamageTaken => _totalDamageTaken;
 
 		#endregion
 
@@ -45,10 +47,16 @@ namespace Moreno.SewingGame
 
 		#region Public Methods
 
+		public void ResetValues()
+		{
+			_totalDamageTaken = 0;
+		}
+
 		public void CauseDamage(Vector3 position,float damage, float intensity)
 		{
 			if(intensity < 0) return;
 			_lastTimeDamageTaken = Time.time;
+			_totalDamageTaken += damage;
 			DebugExtension.DrawMarker(position,intensity,Color.red,depthTest: false);
 			Debug.Log($"OUCH | {position}, {damage}, {intensity}");
 			PlaySound(intensity);

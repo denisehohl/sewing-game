@@ -31,9 +31,9 @@ namespace Moreno.SewingGame.Ui.Views
                 return;
             }
 
-            _timeDisplay.text = FloatSecondsToTimeString(score.Time);
-            _accuracyDisplay.text = "Accuracy: " + level.GetAccuracyPercentage(score.Inacuracy).ToString(PERCENTAGE_FORMAT);
-            _cleanlinessDisplay.text ="Cleanliness" + level.GetCleanPercentage(score.DamageTaken).ToString(PERCENTAGE_FORMAT);
+            _timeDisplay.text = $"Time: {FloatSecondsToTimeString(score.Time)}";
+            _accuracyDisplay.text = $"Accuracy: {level.GetAccuracyPercentage(score.Inacuracy).ToString(PERCENTAGE_FORMAT)}";
+            _cleanlinessDisplay.text = $"Cleanliness: {level.GetCleanPercentage(score.DamageTaken).ToString(PERCENTAGE_FORMAT)}";
         }
         
         public static string FloatSecondsToTimeString(float totalSeconds)

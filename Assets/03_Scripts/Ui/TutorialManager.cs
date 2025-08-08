@@ -16,7 +16,8 @@ namespace Moreno.SewingGame.Ui
         Pin,
         Line,
         Needle,
-        Thread
+        Thread,
+        Speed2,
     }
     
     public class TutorialManager : ComponentPublishBehaviour<TutorialManager>
@@ -80,6 +81,17 @@ namespace Moreno.SewingGame.Ui
                         }
                     }
                     break;
+                case TutorialStep.Speed2:
+                    if (SewingMachineController.Instance.CurrentSpeed != 0)
+                    {
+                        _completedTime += Time.deltaTime;
+
+                        if (_completedTime > _minCompletedSpeedTime)
+                        {
+                            TryCompleteStep(TutorialStep.Speed2);
+                        }
+                    }
+                    break;
                 case TutorialStep.Drag:
                     if (SewingMachineController.Instance.CurrentRotationSpeed != 0)
                     {
@@ -131,6 +143,7 @@ namespace Moreno.SewingGame.Ui
             {
                 case TutorialStep.Pin:
                     Pin.OnPinRemoved -= OnPinRemoved;
+                    StartDelayedTutorial(TutorialStep.Speed2,3);
                     break;
                 case TutorialStep.Line:
                     break;
@@ -187,6 +200,7 @@ namespace Moreno.SewingGame.Ui
             IEnumerator Routine()
             {
                 yield return new WaitForSeconds(delay);
+                if(_currentStep != TutorialStep.None) yield break;
                 DisplayTutorialStep(step);
             }
         }

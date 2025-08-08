@@ -17,6 +17,8 @@ namespace Moreno.SewingGame.Ui
         [SerializeField]
         private UIView _inGame;
         [SerializeField]
+        private UIView _pause;
+        [SerializeField]
         private UIView _result;
 
         private List<UIView> _activeViews = new List<UIView>();
@@ -62,6 +64,9 @@ namespace Moreno.SewingGame.Ui
                     break;
                 case StatesEnum.Result:
                     _showViews.Add(_result);
+                    break;
+                case StatesEnum.Paused:
+                    _showViews.Add(_pause);
                     break;
             }
             

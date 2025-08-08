@@ -1,6 +1,7 @@
 ﻿using System;
 using Ateo.Common;
 using Ateo.StateManagement;
+using Moreno.SewingGame.Path;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
@@ -40,8 +41,26 @@ namespace Moreno.SewingGame
 			GoToState(_startState);
 		}
 
+		protected override void OnPublish()
+		{
+			PathEvaluater.OnPathEndReached += OnPathEnded;
+		}
+
+		private void OnPathEnded()
+		{
+			GatherScore();
+			StateManager.ChangeTo(StatesEnum.Result);
+		}
+
+		private void GatherScore()
+		{
+			var score = SewingMachineController.Instance.GatherScore();
+			HighScoreManager.Instance.AddHighScore(Context.CurrentLevel,score);
+		}
+
 		protected override void OnWithdraw()
 		{
+			PathEvaluater.OnPathEndReached -= OnPathEnded;
 			base.OnWithdraw();
 			Context.CurrentLevel = null;
 		}

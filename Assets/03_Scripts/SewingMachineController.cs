@@ -106,6 +106,7 @@ namespace Moreno.SewingGame
 
 		#region private Variables
 
+		private float _sewingTime;
 		private float _speedVelocity;
 		private float _currentSpeed;
 		private float _targetSpeed;
@@ -159,7 +160,6 @@ namespace Moreno.SewingGame
 
 		private void Update()
 		{
-			if(StateManager.CurrentEnum != StatesEnum.InGame) return;
 			CheckPlayerInput();
 		}
 
@@ -199,6 +199,9 @@ namespace Moreno.SewingGame
 			SetFootState(false);
 			_fabricParent.position = _fabricStartPosition;
 			_fabricParent.rotation = Quaternion.identity;
+			_fabricRotator.rotation = Quaternion.identity;
+			DamageManager.Instance.ResetValues();
+			_sewingTime = 0;
 			_pathEvaluator.ResetValues();
 			_pinManager.RemoveAllPins();
 			_needleManager.SetNeedleBrokenVisual(false);
@@ -230,6 +233,16 @@ namespace Moreno.SewingGame
 					yield return null;
 				}
 			}
+		}
+
+		public LevelScore GatherScore()
+		{
+			var score = new LevelScore();
+			score.Inacuracy = _pathEvaluator.AccumulatedDistanceOffset;
+			score.DamageTaken = DamageManager.Instance.TotalDamageTaken;
+			score.Time = _sewingTime;
+
+			return score;
 		}
 
 		#endregion
@@ -279,6 +292,10 @@ namespace Moreno.SewingGame
 		private void CheckPlayerInput()
 		{
 			bool gasDown = GetPowerKeys();
+			
+			if(StateManager.CurrentEnum != StatesEnum.InGame) return;
+
+			_sewingTime += Time.deltaTime;
 
 			if (Input.GetKeyDown(KeyCode.LeftShift))
 			{
