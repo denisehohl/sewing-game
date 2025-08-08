@@ -13,6 +13,10 @@ MonoBehaviour:
   m_Name: Tutorial Level
   m_EditorClassIdentifier: 
   _isTutorial: 1
+  _perfectAccuracyRange: 5
+  _imperfectAccuracyRange: 50
+  _perfectDamageTaken: 0
+  _imperfectDamageTaken: 20
   _machineDirectionRange: 0
   _machineDirectionChangeRange: 0
   _pathData: {fileID: 11400000, guid: 5143394aac921784682cd6c978cf0562, type: 2}
@@ -21,7 +25,7 @@ MonoBehaviour:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 0.065761566
+      value: 0.20104218
       inSlope: -0.9836601
       outSlope: -0.9836601
       tangentMode: 0

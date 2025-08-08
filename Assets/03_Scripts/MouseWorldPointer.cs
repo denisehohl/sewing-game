@@ -1,6 +1,7 @@
 ﻿using System;
 using Ateo.Common;
 using Ateo.Extensions;
+using Ateo.StateManagement;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
@@ -62,6 +63,17 @@ namespace Moreno.SewingGame
 			_backupPlane = new Plane();
 		}
 
+		protected override void OnPublish()
+		{
+			InGame.Instance.OnStart += OnInGameStarted;
+		}
+
+		protected override void OnWithdraw()
+		{
+			InGame.Instance.OnStart -= OnInGameStarted;
+			
+		}
+
 		private void Update()
 		{
 			TryDetectMouseInput();
@@ -100,6 +112,11 @@ namespace Moreno.SewingGame
 			if (TryMouseRaycast(ray, out RaycastHit hit))
 			{
 				SetCurrentPosition(hit.point);
+
+				if (StateManager.CurrentEnum != StatesEnum.InGame)
+				{
+					return;
+				}
 				var obj = hit.collider.gameObject;
 				_currentInteractionObject = obj;
 				bool isFabric = _fabricLayer.Contains(obj.layer);
@@ -169,6 +186,11 @@ namespace Moreno.SewingGame
 		#endregion
 
 		#region Event Callbacks
+		
+		private void OnInGameStarted()
+		{
+			_pressedDownOnFabric = false;
+		}
 
 		#endregion
 

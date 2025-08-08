@@ -1,5 +1,7 @@
 ﻿using System;
 using Ateo.Common;
+using Ateo.StateManagement;
+using Moreno.SewingGame.Path;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
@@ -12,7 +14,7 @@ namespace Moreno.SewingGame
 		[SerializeField]
 		private SettingsData _currentSettings;
 		[SerializeField]
-		private LevelSetting _levelToStart;
+		private StatesEnum _startState;
 
 		#endregion
 
@@ -36,11 +38,29 @@ namespace Moreno.SewingGame
 
 		protected override void OnStart()
 		{
-			StartLevel(_levelToStart);
+			GoToState(_startState);
+		}
+
+		protected override void OnPublish()
+		{
+			PathEvaluater.OnPathEndReached += OnPathEnded;
+		}
+
+		private void OnPathEnded()
+		{
+			GatherScore();
+			StateManager.ChangeTo(StatesEnum.Result);
+		}
+
+		private void GatherScore()
+		{
+			var score = SewingMachineController.Instance.GatherScore();
+			HighScoreManager.Instance.AddHighScore(Context.CurrentLevel,score);
 		}
 
 		protected override void OnWithdraw()
 		{
+			PathEvaluater.OnPathEndReached -= OnPathEnded;
 			base.OnWithdraw();
 			Context.CurrentLevel = null;
 		}
@@ -55,12 +75,19 @@ namespace Moreno.SewingGame
 			Context.CurrentLevel = level;
 			Context.InTutorial = level.IsTutorial;
 			SewingMachineController.Instance.PrepareLevel();
+			StateManager.ChangeTo(StatesEnum.InGame);
 			OnLevelStarted?.Invoke();
 		}
 
 		#endregion
 
 		#region Private Methods
+
+		[Button]
+		private void GoToState(StatesEnum state)
+		{
+			StateManager.ChangeTo(state);
+		}
 
 		#endregion
 

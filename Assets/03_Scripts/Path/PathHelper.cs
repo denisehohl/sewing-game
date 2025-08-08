@@ -5,41 +5,53 @@ namespace Moreno.SewingGame.Path
 {
 	public static class PathHelper
 	{
-		public static float GetDistanceToClosestPointOnPath(this List<Vector2> points, Vector2 localTarget) =>
-			GetDistanceToClosestPointOnPath(points, localTarget, out Vector2 pointOnTrack, out int start, out int end, out float t);
+		public static float GetDistanceToClosestPointOnPath(this PathData data, Vector2 localTarget) =>
+			GetDistanceToClosestPointOnPath(data, localTarget, out Vector2 pointOnTrack, out int start, out int end, out float t, out _);
 		
-		public static float GetDistanceToClosestPointOnPath(this List<Vector2> points, Vector2 localTarget, out Vector2 pointOnTrack) =>
-			GetDistanceToClosestPointOnPath(points, localTarget, out pointOnTrack, out _, out _, out _);
+		public static float GetDistanceToClosestPointOnPath(this PathData data, Vector2 localTarget, out Vector2 pointOnTrack, out float distanceOnTrack) =>
+			GetDistanceToClosestPointOnPath(data, localTarget, out pointOnTrack, out _, out _, out _, out distanceOnTrack);
 		
-		public static float GetDistanceToClosestPointOnPath(this List<Vector2> points, Vector2 localTarget, out Vector2 pointOnTrack, out int start) =>
-			GetDistanceToClosestPointOnPath(points, localTarget, out pointOnTrack, out start, out int end, out float t);
+		public static float GetDistanceToClosestPointOnPath(this PathData data, Vector2 localTarget, out Vector2 pointOnTrack, out int start) =>
+			GetDistanceToClosestPointOnPath(data, localTarget, out pointOnTrack, out start, out int end, out float t, out _);
 		
-		public static float GetDistanceToClosestPointOnPath(this List<Vector2> points, Vector2 localTarget, out Vector2 pointOnTrack, out int start, out int end, out  float t)
+		public static float GetDistanceToClosestPointOnPath(this PathData data, Vector2 localTarget, out Vector2 pointOnTrack, out int start, out int end, out  float t, out float distanceOnTrack)
 		{
 			float currentClosestSqrMag = float.MaxValue;
 
+			var points = data.Points;
+			var distances = data.Distances;
+
 			pointOnTrack = Vector2.zero;
-			Vector2 b = points[0];
 			start = 0;
 			t = 0;
 			
 			for (int i = 1; i < points.Count; i++)
 			{
-				Vector2 a = points[i];
+				Vector2 a = points[i - 1];
+				Vector2 b = points[i];
 
-				Vector2 pointOnSegment = GetClosestPointOnLineSegment(a, b, localTarget,out float n);
+				Vector2 pointOnSegment = GetClosestPointOnLineSegment(a, b, localTarget, out float n);
 				float sqrMagnitude = (pointOnSegment - localTarget).sqrMagnitude;
+
 				if (sqrMagnitude < currentClosestSqrMag)
 				{
 					currentClosestSqrMag = sqrMagnitude;
-					start = i;
-					t = (float) n;
+					start = i - 1;  // Fix the segment start index
+					t = n;
 					pointOnTrack = pointOnSegment;
 				}
-				b = a;
 			}
 
 			end = start + 1;
+
+			if (start >= distances.Count - 1)
+			{
+				distanceOnTrack = distances[distances.Count - 1];
+			}
+			else
+			{
+				distanceOnTrack = Mathf.Lerp(distances[start], distances[start + 1], t);
+			}
 			
 			return Vector2.Distance(localTarget, pointOnTrack);
 		}

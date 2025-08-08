@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Ateo.Animation;
 using Ateo.Common;
+using Ateo.StateManagement;
 using DG.Tweening;
 using FMODUnity;
 using Moreno.SewingGame.Audio;
@@ -105,6 +106,7 @@ namespace Moreno.SewingGame
 
 		#region private Variables
 
+		private float _sewingTime;
 		private float _speedVelocity;
 		private float _currentSpeed;
 		private float _targetSpeed;
@@ -167,6 +169,7 @@ namespace Moreno.SewingGame
 
 		public void PrepareLevel()
 		{
+			MoveNeedleToOutPoint();
 			ResetMachine();
 			_pathEvaluator.PrepareLevel();
 			_pinManager.PrepareLevel();
@@ -180,6 +183,7 @@ namespace Moreno.SewingGame
 			_pathEvaluator.AccuracyTrend = 0;
 			_needleManager.SetNeedleBrokenVisual(true);
 			RuntimeManager.PlayOneShot(_MachineBrokenEvent);
+			DamageManager.Instance.AddDamageWithoutNotify(10);
 			
 			MoveNeedleToOutPoint();
 			StartCoroutine(_needleManager.StartReplaceTask(Callback));
@@ -197,6 +201,9 @@ namespace Moreno.SewingGame
 			SetFootState(false);
 			_fabricParent.position = _fabricStartPosition;
 			_fabricParent.rotation = Quaternion.identity;
+			_fabricRotator.rotation = Quaternion.identity;
+			DamageManager.Instance.ResetValues();
+			_sewingTime = 0;
 			_pathEvaluator.ResetValues();
 			_pinManager.RemoveAllPins();
 			_needleManager.SetNeedleBrokenVisual(false);
@@ -228,6 +235,16 @@ namespace Moreno.SewingGame
 					yield return null;
 				}
 			}
+		}
+
+		public LevelScore GatherScore()
+		{
+			var score = new LevelScore();
+			score.Inacuracy = _pathEvaluator.AccumulatedDistanceOffset;
+			score.DamageTaken = DamageManager.Instance.TotalDamageTaken;
+			score.Time = _sewingTime;
+
+			return score;
 		}
 
 		#endregion
@@ -263,7 +280,7 @@ namespace Moreno.SewingGame
 					_sewingMachineAudio.StopSound();
 				}
 
-				if (previousKeyCount == 0)
+				if (previousKeyCount == 0 && StateManager.CurrentEnum == StatesEnum.InGame)
 				{
 					_sewingMachineAudio.StartSound();
 				}
@@ -277,6 +294,10 @@ namespace Moreno.SewingGame
 		private void CheckPlayerInput()
 		{
 			bool gasDown = GetPowerKeys();
+			
+			if(StateManager.CurrentEnum != StatesEnum.InGame) return;
+
+			_sewingTime += Time.deltaTime;
 
 			if (Input.GetKeyDown(KeyCode.LeftShift))
 			{
