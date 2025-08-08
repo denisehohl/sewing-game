@@ -51,7 +51,7 @@ namespace Moreno.SewingGame
 				var instance = _instances[i];
 				if (instance != null)
 				{
-					Destroy(instance);
+					Destroy(instance.gameObject);
 				}
 			}
 			_instances.Clear();
