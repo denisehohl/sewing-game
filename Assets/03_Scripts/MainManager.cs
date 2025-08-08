@@ -53,6 +53,7 @@ namespace Moreno.SewingGame
 		public void StartLevel(LevelSetting level)
 		{
 			Context.CurrentLevel = level;
+			Context.InTutorial = level.IsTutorial;
 			SewingMachineController.Instance.PrepareLevel();
 			OnLevelStarted?.Invoke();
 		}

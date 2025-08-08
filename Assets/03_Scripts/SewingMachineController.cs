@@ -110,7 +110,7 @@ namespace Moreno.SewingGame
 		private float _targetSpeed;
 		private int _currentKeysPressed;
 		private float _needleAnimationTime = 0;
-		private float _currentRotation = 0;
+		private float _currentRotationSpeed = 0;
 		private bool _footDown;
 		private float _previousNormalizedNeedleAnimationTime;
 		private bool _broken = false;
@@ -137,6 +137,12 @@ namespace Moreno.SewingGame
 			}
 		}
 
+		public bool FootDown => _footDown;
+
+		public float CurrentRotationSpeed => _currentRotationSpeed;
+
+		public float CurrentTraveledDistance => _needleAnimationTime;
+
 		#endregion
 
 		#region Delegates & Events
@@ -145,7 +151,7 @@ namespace Moreno.SewingGame
 
 		#region Monobehaviour Callbacks
 
-		protected override void OnStart()
+		protected override void OnPublish()
 		{
 			_fabricStartPosition = _fabricParent.position;
 		}
@@ -296,6 +302,7 @@ namespace Moreno.SewingGame
 		private void RotateFabric(float direction)
 		{
 			float speed = _footDown ? _currentSpeed : -1;
+			_currentRotationSpeed = direction * speed * _rotationSpeed;
 			_fabricRotator.Rotate(Vector3.up,direction*speed*_rotationSpeed);
 		}
 

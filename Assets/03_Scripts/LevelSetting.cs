@@ -11,6 +11,8 @@ namespace Moreno.SewingGame
 	public class LevelSetting : ScriptableObject
 	{
 		[SerializeField]
+		private bool _isTutorial;
+		[SerializeField]
 		private float _machineDirectionRange;
 		[SerializeField]
 		private float _machineDirectionChangeRange;
@@ -37,6 +39,7 @@ namespace Moreno.SewingGame
 		[SerializeField]
 		private float _threadingMaxSmoothSpeed;
 
+		public bool IsTutorial => _isTutorial;
 		public float MachineDirectionRange => _machineDirectionRange;
 
 		public float MachineDirectionChangeRange => _machineDirectionChangeRange;

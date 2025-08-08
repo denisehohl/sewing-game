@@ -1,0 +1,49 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1ef927c3ec494a3baf17399d5b8df209, type: 3}
+  m_Name: Tutorial Level
+  m_EditorClassIdentifier: 
+  _isTutorial: 1
+  _machineDirectionRange: 0
+  _machineDirectionChangeRange: 0
+  _pathData: {fileID: 11400000, guid: 5143394aac921784682cd6c978cf0562, type: 2}
+  _accuracyScorePerDistance:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0.065761566
+      inSlope: -0.9836601
+      outSlope: -0.9836601
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.047400612
+    - serializedVersion: 3
+      time: 1.4272523
+      value: -0.9968262
+      inSlope: -2.9157877
+      outSlope: -2.9157877
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.04281346
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _spawnPins: 1
+  _pinSpawnDistanceRange: {x: 40, y: 40}
+  _canPinsFlip: 0
+  _pinRandomRotationRange: 17.5
+  _threadingRandomRange: {x: 0.1, y: 0.78}
+  _threadingSmoothTime: 0.2
+  _threadingMaxSmoothSpeed: 3.58

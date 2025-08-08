@@ -76,6 +76,11 @@ namespace Moreno.SewingGame
 
 		#region Delegates & Events
 
+		public static event Action OnNeedleBroken;
+		public static event Action OnNeedleFixed;
+		public static event Action OnThreadingStarted;
+		public static event Action OnThreadingCompleted;
+
 		#endregion
 
 		#region Monobehaviour Callbacks
@@ -116,6 +121,7 @@ namespace Moreno.SewingGame
 			bool needleReplaced = !_brokenNeedle.gameObject.activeSelf;
 			_brokenNeedle.OnClicked += ()=> needleReplaced = true;
 			_closeupCam.gameObject.SetActive(true);
+			OnNeedleBroken?.Invoke();
 
 			while (!needleReplaced)
 			{
@@ -124,6 +130,7 @@ namespace Moreno.SewingGame
 			
 			_brokenNeedle.ClearListeners();
 			SwapNewNeedleIn();
+			OnNeedleFixed?.Invoke();
 
 			yield return StartThreadTask();
 			
@@ -138,13 +145,14 @@ namespace Moreno.SewingGame
 		private IEnumerator StartThreadTask()
 		{
 			yield return new WaitForSeconds(2f);
+			OnThreadingStarted?.Invoke();
 			InitThreadMinigame();
 			while (_inThreadingMinigame)
 			{
 				UpdateThreadMinigame();
 				yield return null;
 			}
-
+			OnThreadingCompleted?.Invoke();
 			yield return new WaitForSeconds(1f);
 			_threadTarget.gameObject.SetActive(false);
 		}

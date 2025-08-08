@@ -39,6 +39,8 @@ namespace Moreno.SewingGame
 
 		#region Delegates & Events
 
+		public static event Action<Pin> OnPinRemoved;
+
 		#endregion
 
 		#region Monobehaviour Callbacks
@@ -124,6 +126,7 @@ namespace Moreno.SewingGame
 				_rigidbody.isKinematic = false;
 				_rigidbody.AddForce((_negativeCollider.transform.right+ Vector3.up * 0.2f) * 500f);
 				RuntimeManager.PlayOneShot(_extractSound,transform.position);
+				OnPinRemoved?.Invoke(this);
 				yield return new WaitForSeconds(5f);
 				gameObject.SetActive(false);
 			}

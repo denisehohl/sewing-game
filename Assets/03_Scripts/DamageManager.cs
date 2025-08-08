@@ -37,6 +37,7 @@ namespace Moreno.SewingGame
 
 		public override void ResetStatics()
 		{
+			base.ResetStatics();
 			OnDamageTaken = null;
 		}
 
