@@ -13,6 +13,9 @@ namespace Moreno.SewingGame.Path
 		private LineRenderer _pathVisualizer;
 		[SerializeField, Required]
 		private LineRenderer _playerPathVisualizer;
+		
+		[SerializeField]
+		private float _endReachedRadius = 1f;
 
 		#endregion
 
@@ -44,7 +47,8 @@ namespace Moreno.SewingGame.Path
 
 		#region Delegates & Events
 
-		public static event Action<float> OnAccuracyChanged; 
+		public static event Action<float> OnAccuracyChanged;
+		public static event Action OnPathEndReached; 
 
 		#endregion
 
@@ -93,13 +97,19 @@ namespace Moreno.SewingGame.Path
 		{
 			if(_currentPath == null) return;
 			Vector2 localPoint = TranslateWorldToPathPoint(positionToCheck);
-			float distance = _currentPath.Points.GetDistanceToClosestPointOnPath(localPoint, out var pointOnTrack);
+			float distance = _currentPath.GetDistanceToClosestPointOnPath(localPoint, out var pointOnTrack, out float traversedTrackDistance);
 			
 			AddPointToPlayerPath(localPoint);
 
 			AccuracyTrend += Context.CurrentLevel.GetAccuracyScoreForDistanceToPath(distance);
 			
 			_accumulatedDistanceOffset += distance;
+
+			if (Math.Abs(traversedTrackDistance - _currentPath.PathLength) < _endReachedRadius)
+			{
+				OnPathEndReached?.Invoke();
+				Debug.Log("End Reached");
+			}
 		}
 
 		public bool TryGetWorldPositionFromPathDistance(float distance, out Vector3 worldPoint)
