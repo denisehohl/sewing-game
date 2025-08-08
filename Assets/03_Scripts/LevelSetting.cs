@@ -79,14 +79,15 @@ namespace Moreno.SewingGame
 		{
 			return _accuracyScorePerDistance.Evaluate(distance);
 		}
-
+		
 		public float GetAccuracyPercentage(float accuracy)
 		{
-			return Mathf.InverseLerp(_imperfectAccuracyRange, _perfectAccuracyRange, accuracy) * 100f;
+			return Mathf.Clamp01(Mathf.InverseLerp(_imperfectAccuracyRange, _perfectAccuracyRange, accuracy)) * 100f;
 		}
+		
 		public float GetCleanPercentage(float accuracy)
 		{
-			return Mathf.InverseLerp(_imperfectDamageTaken, _perfectDamageTaken, accuracy) * 100f;
+			return  Mathf.Clamp01(Mathf.InverseLerp(_imperfectDamageTaken, _perfectDamageTaken, accuracy)) * 100f;
 		}
 	}
 }

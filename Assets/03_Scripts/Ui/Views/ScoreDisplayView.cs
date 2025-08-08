@@ -15,7 +15,7 @@ namespace Moreno.SewingGame.Ui.Views
 
         private Image[] _starDisplays;
 
-        private string PERCENTAGE_FORMAT = "##0.0%";
+        private string PERCENTAGE_FORMAT = "##0.#";
 
         public void Init(LevelSetting level, LevelScore score)
         {
@@ -30,10 +30,13 @@ namespace Moreno.SewingGame.Ui.Views
                 _timeDisplay.text = "no Score";
                 return;
             }
+            
+            float acuracy = level.GetAccuracyPercentage(score.Inacuracy);
+            float clean = level.GetCleanPercentage(score.DamageTaken);
 
             _timeDisplay.text = $"Time: {FloatSecondsToTimeString(score.Time)}";
-            _accuracyDisplay.text = $"Accuracy: {level.GetAccuracyPercentage(score.Inacuracy).ToString(PERCENTAGE_FORMAT)}";
-            _cleanlinessDisplay.text = $"Cleanliness: {level.GetCleanPercentage(score.DamageTaken).ToString(PERCENTAGE_FORMAT)}";
+            _accuracyDisplay.text = $"Accuracy: {acuracy.ToString(PERCENTAGE_FORMAT)}%";
+            _cleanlinessDisplay.text = $"Cleanliness: {clean.ToString(PERCENTAGE_FORMAT)}%";
         }
         
         public static string FloatSecondsToTimeString(float totalSeconds)
