@@ -29,6 +29,8 @@ namespace Moreno.SewingGame
 		private bool _canPinsFlip = false;
 		[SerializeField, ShowIf(nameof(_showPinRotationOption)), Range(0f,90f)]
 		private float _pinRandomRotationRange;
+		[SerializeField, Range(0f,10f)]
+		private float _lineWidth = 0.01f;
 
 		public float MachineDirectionRange => _machineDirectionRange;
 
@@ -41,6 +43,7 @@ namespace Moreno.SewingGame
 		public bool CanPinsFlip => _canPinsFlip;
 
 		public float PinRandomRotationRange => _pinRandomRotationRange;
+		public float LineWidth => _lineWidth;
 
 		public PathData PathData => _pathData;
 

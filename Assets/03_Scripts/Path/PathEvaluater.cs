@@ -143,7 +143,7 @@ namespace Moreno.SewingGame.Path
 		private void UpdatePathVisual(PathData data)
 		{
 			_pathVisualizer.gameObject.SetActive(data != null);
-			if(data == null) return;
+			if (data == null) return;
 			var points = data.Points;
 			var count = points.Count;
 			var convertedList = new Vector3[count];
@@ -152,9 +152,10 @@ namespace Moreno.SewingGame.Path
 				var point = points[i];
 				convertedList[i] = new Vector3(point.x, point.y, 0);
 			}
-			
+
 			_pathVisualizer.positionCount = count;
 			_pathVisualizer.SetPositions(convertedList);
+			_pathVisualizer.startWidth = Context.CurrentLevel.LineWidth;
 		}
 
 		#endregion
