@@ -127,7 +127,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1715215212835672402}
   m_HandleRect: {fileID: 8100181010392424143}
   m_Direction: 2
-  m_Value: 1
+  m_Value: 0
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -789,6 +789,14 @@ PrefabInstance:
     - target: {fileID: 8964046251200204242, guid: f260272d0b0e3ef4a86b064e4773bf61, type: 3}
       propertyPath: m_text
       value: Level Selection
+      objectReference: {fileID: 0}
+    - target: {fileID: 8964046251200204242, guid: f260272d0b0e3ef4a86b064e4773bf61, type: 3}
+      propertyPath: m_fontSize
+      value: 95.43
+      objectReference: {fileID: 0}
+    - target: {fileID: 8964046251200204242, guid: f260272d0b0e3ef4a86b064e4773bf61, type: 3}
+      propertyPath: m_fontSizeBase
+      value: 95.43
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
