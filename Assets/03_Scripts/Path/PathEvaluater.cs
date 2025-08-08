@@ -11,9 +11,10 @@ namespace Moreno.SewingGame.Path
 
 		[SerializeField, Required]
 		private LineRenderer _pathVisualizer;
+
 		[SerializeField, Required]
 		private LineRenderer _playerPathVisualizer;
-		
+
 		[SerializeField]
 		private float _endReachedRadius = 1f;
 
@@ -37,7 +38,7 @@ namespace Moreno.SewingGame.Path
 			set
 			{
 				var clamped = Mathf.Clamp(value, 0, 1f);
-				if(clamped == _accuracyTrend) return;
+				if (clamped == _accuracyTrend) return;
 				_accuracyTrend = clamped;
 				OnAccuracyChanged?.Invoke(clamped);
 			}
@@ -48,7 +49,7 @@ namespace Moreno.SewingGame.Path
 		#region Delegates & Events
 
 		public static event Action<float> OnAccuracyChanged;
-		public static event Action OnPathEndReached; 
+		public static event Action OnPathEndReached;
 
 		#endregion
 
@@ -95,14 +96,14 @@ namespace Moreno.SewingGame.Path
 
 		public void CheckWorldPointPathAccuracy(Vector3 positionToCheck)
 		{
-			if(_currentPath == null) return;
+			if (_currentPath == null) return;
 			Vector2 localPoint = TranslateWorldToPathPoint(positionToCheck);
 			float distance = _currentPath.GetDistanceToClosestPointOnPath(localPoint, out var pointOnTrack, out float traversedTrackDistance);
-			
+
 			AddPointToPlayerPath(localPoint);
 
 			AccuracyTrend += Context.CurrentLevel.GetAccuracyScoreForDistanceToPath(distance);
-			
+
 			_accumulatedDistanceOffset += distance;
 
 			if (Math.Abs(traversedTrackDistance - _currentPath.PathLength) < _endReachedRadius)
@@ -120,6 +121,7 @@ namespace Moreno.SewingGame.Path
 				pathDirection = new Vector3(direction.y, 0, direction.x);
 				return true;
 			}
+
 			worldPoint = Vector3.zero;
 			pathDirection = Vector3.zero;
 			return false;
@@ -132,7 +134,7 @@ namespace Moreno.SewingGame.Path
 		private void AddPointToPlayerPath(Vector2 localPoint)
 		{
 			int count = _playerPathVisualizer.positionCount++;
-			_playerPathVisualizer.SetPosition(count,localPoint);
+			_playerPathVisualizer.SetPosition(count, localPoint);
 		}
 
 		private void ResetPlayerPathVisualizer()
@@ -152,7 +154,6 @@ namespace Moreno.SewingGame.Path
 			return _pathVisualizer.transform.TransformPoint(pathPoint);
 		}
 
-		[Button]
 		private void UpdatePathVisual(PathData data)
 		{
 			_pathVisualizer.gameObject.SetActive(data != null);
@@ -171,6 +172,26 @@ namespace Moreno.SewingGame.Path
 			_pathVisualizer.startWidth = Context.CurrentLevel.LineWidth;
 		}
 
+		[Button]
+		private void UpdatePathVisual(LevelSetting level)
+		{
+			PathData data = level.PathData;
+			_pathVisualizer.gameObject.SetActive(data != null);
+			if (data == null) return;
+			var points = data.Points;
+			var count = points.Count;
+			var convertedList = new Vector3[count];
+			for (int i = 0; i < count; i++)
+			{
+				var point = points[i];
+				convertedList[i] = new Vector3(point.x, point.y, 0);
+			}
+
+			_pathVisualizer.positionCount = count;
+			_pathVisualizer.SetPositions(convertedList);
+			_pathVisualizer.startWidth = level.LineWidth;
+		}
+
 		#endregion
 
 		#region Helper Functions
@@ -184,11 +205,11 @@ namespace Moreno.SewingGame.Path
 
 			foreach (Vector3 v in pathBuffer)
 			{
-				finalList.Add(new Vector2(v.x,v.y));
+				finalList.Add(new Vector2(v.x, v.y));
 			}
 
 			target.Points = finalList;
-			
+
 			target.CalculateDistances();
 
 #if UNITY_EDITOR
@@ -202,7 +223,5 @@ namespace Moreno.SewingGame.Path
 		#region Event Callbacks
 
 		#endregion
-
-		
 	}
 }

@@ -77,6 +77,15 @@ namespace Moreno.SewingGame
 			var instance = Instantiate(_pinPrefab, _pinParent);
 			var t = instance.transform;
 			t.position = worldPosition + new Vector3(0, 0.01f, 0);
+
+			if (setting.LineWidth >= 1f)
+			{
+				Vector3 positionOffset = Quaternion.AngleAxis(90f, Vector3.up) * pathDirection;
+				positionOffset *= Random.Range(0f, setting.LineWidth * 2f);
+				positionOffset *= Random.Range(0, 2) == 1 ? 1f : -1f;
+				t.position += positionOffset;
+			}
+
 			var randomYRotation = Random.Range(-1f, 1f) * setting.PinRandomRotationRange;
 			if (setting.CanPinsFlip)
 			{

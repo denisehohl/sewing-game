@@ -690,7 +690,10 @@ MonoBehaviour:
   _hideWhenParentViewIsHiding: 1
   _avaliableLevels:
   - {fileID: 11400000, guid: 5fc9333133c07b24595bbab4fae03d5b, type: 2}
-  - {fileID: 11400000, guid: 20ee60be85417ce49ab285a338650cd6, type: 2}
+  - {fileID: 11400000, guid: db6e2163feb00284aa768c015d0a9345, type: 2}
+  - {fileID: 11400000, guid: e0e3878c6490787489819c84ef6d7df0, type: 2}
+  - {fileID: 11400000, guid: 629a4ce450d4a754db04446b33819004, type: 2}
+  - {fileID: 11400000, guid: 4b260e87bdeb6354393c5653d98a41c9, type: 2}
   - {fileID: 11400000, guid: 2ba39c7001d6097499047c28bb20ab6e, type: 2}
   _levelSelectEntryPrefab: {fileID: 1353895969651396400, guid: 21d3ece17cf80cb498a3e45d7d797f1e, type: 3}
   _listParent: {fileID: 3239479486384975433}

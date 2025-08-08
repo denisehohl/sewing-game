@@ -13,6 +13,10 @@ MonoBehaviour:
   m_Name: Spiral Level
   m_EditorClassIdentifier: 
   _isTutorial: 0
+  _perfectAccuracyRange: 5
+  _imperfectAccuracyRange: 50
+  _perfectDamageTaken: 0
+  _imperfectDamageTaken: 20
   _machineDirectionRange: 0
   _machineDirectionChangeRange: 0
   _pathData: {fileID: 11400000, guid: 7420e08d94c024b4e9c20ccff38164db, type: 2}

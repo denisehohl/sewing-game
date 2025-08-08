@@ -13,6 +13,10 @@ MonoBehaviour:
   m_Name: X Citiy Cruise Level
   m_EditorClassIdentifier: 
   _isTutorial: 0
+  _perfectAccuracyRange: 5
+  _imperfectAccuracyRange: 50
+  _perfectDamageTaken: 0
+  _imperfectDamageTaken: 20
   _machineDirectionRange: 0
   _machineDirectionChangeRange: 0
   _pathData: {fileID: 11400000, guid: 740c9823c6b3a194597a66168fdda678, type: 2}
@@ -41,9 +45,9 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   _spawnPins: 1
-  _pinSpawnDistanceRange: {x: 10, y: 40}
+  _pinSpawnDistanceRange: {x: 6, y: 30}
   _canPinsFlip: 1
-  _pinRandomRotationRange: 60
+  _pinRandomRotationRange: 90
   _lineWidth: 5
   _threadingRandomRange: {x: 0.1, y: 0.78}
   _threadingSmoothTime: 0.2
