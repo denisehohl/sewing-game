@@ -3,16 +3,20 @@ using System.Collections.Generic;
 using System.Linq;
 using Ateo.Common;
 using Ateo.StateManagement;
-using Ateo.ViewManagement;
+using Doozy.Runtime.UIManager.Containers;
 using UnityEngine;
 
 namespace Moreno.SewingGame.Ui
 {
     public class UiManager : ComponentPublishBehaviour<UiManager>
     {
+        [SerializeField]
         private UIView _main;
-        private UIView _LevelSelect;
+        [SerializeField]
+        private UIView _levelSelect;
+        [SerializeField]
         private UIView _inGame;
+        [SerializeField]
         private UIView _result;
 
         private List<UIView> _activeViews;
@@ -26,6 +30,11 @@ namespace Moreno.SewingGame.Ui
             StateManager.OnStateChanged += OnStateChanged;
         }
 
+        protected override void OnStart()
+        {
+            UpdateViews();
+        }
+
         protected override void OnWithdraw()
         {
             StateManager.OnStateChanged -= OnStateChanged;
@@ -33,25 +42,30 @@ namespace Moreno.SewingGame.Ui
 
         private void OnStateChanged(StatesEnum state, StatesEnum previous)
         {
+            UpdateViews();
+        }
+
+        private void UpdateViews()
+        {
+            var state = StateManager.CurrentEnum;
             switch (state)
             {
                 case StatesEnum.None: 
                     break;
                 case StatesEnum.InGame:
+                    _showViews.Add(_inGame);
                     break;
                 case StatesEnum.LevelSelect:
+                    _showViews.Add(_levelSelect);
                     break;
                 case StatesEnum.Main:
+                    _showViews.Add(_main);
                     break;
                 case StatesEnum.Result:
+                    _showViews.Add(_result);
                     break;
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(state), state, null);
             }
-        }
-
-        private void UpdateViews()
-        {
+            
             foreach (UIView hideView in _hideViewsImmediate)
             {
                 hideView.InstantHide(true);

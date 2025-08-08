@@ -3,11 +3,8 @@ using UnityEngine;
 
 namespace Moreno.SewingGame.Ui.Views
 {
-    public class LevelSelectionViewBehaviour : ViewBehaviour
+    public class MainViewBehaviour : ViewBehaviour
     {
-        [SerializeField]
-        private LevelSetting[] _avaliableLevels;
-
         protected override void OnShowStart()
         {
             Init();
