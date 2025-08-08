@@ -12,6 +12,10 @@ namespace Moreno.SewingGame
 
 		[SerializeField]
 		private EventReference _ouchSound;
+		[SerializeField]
+		private ParticleSystem _bloodSplatter;
+		[SerializeField]
+		private Vector2 _emissionRange = Vector2.left;
 
 		#endregion
 
@@ -60,7 +64,13 @@ namespace Moreno.SewingGame
 			DebugExtension.DrawMarker(position,intensity,Color.red,depthTest: false);
 			Debug.Log($"OUCH | {position}, {damage}, {intensity}");
 			PlaySound(intensity);
+			PlayParticleSystemAtPosition(position, intensity);
 			OnDamageTaken?.Invoke(damage, intensity);
+		}
+
+		public void AddDamageWithoutNotify(float damage)
+		{
+			_totalDamageTaken += damage;
 		}
 
 		#endregion
@@ -75,6 +85,15 @@ namespace Moreno.SewingGame
 			// Start and release
 			eventInstance.start();
 			eventInstance.release(); // Ensures it will be cleaned up after playing
+		}
+
+		private void PlayParticleSystemAtPosition(Vector3 position, float intensity)
+		{
+			float emission = Mathf.Lerp(_emissionRange.x, _emissionRange.y, intensity);
+			var module = _bloodSplatter.emission;
+			module.rateOverTime = new ParticleSystem.MinMaxCurve(emission, emission);
+			_bloodSplatter.gameObject.transform.position = position;
+			_bloodSplatter.Play();
 		}
 
 		#endregion

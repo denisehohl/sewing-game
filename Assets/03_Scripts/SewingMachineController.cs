@@ -169,6 +169,7 @@ namespace Moreno.SewingGame
 
 		public void PrepareLevel()
 		{
+			MoveNeedleToOutPoint();
 			ResetMachine();
 			_pathEvaluator.PrepareLevel();
 			_pinManager.PrepareLevel();
@@ -182,6 +183,7 @@ namespace Moreno.SewingGame
 			_pathEvaluator.AccuracyTrend = 0;
 			_needleManager.SetNeedleBrokenVisual(true);
 			RuntimeManager.PlayOneShot(_MachineBrokenEvent);
+			DamageManager.Instance.AddDamageWithoutNotify(10);
 			
 			MoveNeedleToOutPoint();
 			StartCoroutine(_needleManager.StartReplaceTask(Callback));
