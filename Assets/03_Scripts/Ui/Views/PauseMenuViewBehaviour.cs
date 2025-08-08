@@ -25,6 +25,7 @@ namespace Moreno.SewingGame.Ui.Views
 
         private void Update()
         {
+            if(StateManager.CurrentEnum != StatesEnum.Paused) return;
             if (Input.GetKeyDown(KeyCode.Escape))
             {
                 OnResume();

@@ -278,7 +278,7 @@ namespace Moreno.SewingGame
 					_sewingMachineAudio.StopSound();
 				}
 
-				if (previousKeyCount == 0)
+				if (previousKeyCount == 0 && StateManager.CurrentEnum == StatesEnum.InGame)
 				{
 					_sewingMachineAudio.StartSound();
 				}

@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Ateo.Common;
+using Sirenix.OdinInspector.Editor.GettingStarted;
 using UnityEngine;
 
 namespace Moreno.SewingGame.Ui
@@ -117,10 +118,10 @@ namespace Moreno.SewingGame.Ui
             }
         }
 
-        private void OnStateEnter(TutorialStep step)
+        private void OnStateEnter(TutorialStep newStep, TutorialStep previousStep)
         {
             _completedTime = 0;
-            switch (step)
+            switch (newStep)
             {
                 case TutorialStep.Pin:
                     Pin.OnPinRemoved += OnPinRemoved;
@@ -137,13 +138,16 @@ namespace Moreno.SewingGame.Ui
             }
         }
 
-        private void OnStateExit(TutorialStep step)
+        private void OnStateExit(TutorialStep newStep,TutorialStep previousStep)
         {
-            switch (step)
+            switch (previousStep)
             {
                 case TutorialStep.Pin:
                     Pin.OnPinRemoved -= OnPinRemoved;
-                    StartDelayedTutorial(TutorialStep.Speed2,3);
+                    if (newStep == TutorialStep.None)
+                    {
+                        StartDelayedTutorial(TutorialStep.Speed2,1);
+                    }
                     break;
                 case TutorialStep.Line:
                     break;
@@ -152,6 +156,10 @@ namespace Moreno.SewingGame.Ui
                     break;
                 case TutorialStep.Thread:
                     NeedleManager.OnThreadingCompleted -= OnThreadingCompleted;
+                    if (newStep == TutorialStep.None)
+                    {
+                        StartDelayedTutorial(TutorialStep.Speed2,1);
+                    }
                     break;
             }
         }
@@ -183,8 +191,8 @@ namespace Moreno.SewingGame.Ui
             if(_currentStep == step) return;
             var previous = _currentStep;
             _currentStep = step;
-            OnStateExit(previous);
-            OnStateEnter(step);
+            OnStateExit(step,previous);
+            OnStateEnter(step, previous);
             
             foreach (StepGameObjectEntry entry in _entries)
             {

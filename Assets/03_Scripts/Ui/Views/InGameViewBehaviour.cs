@@ -33,6 +33,7 @@ namespace Moreno.SewingGame.Ui.Views
         
         private void Update()
         {
+            if(StateManager.CurrentEnum != StatesEnum.InGame) return;
             if (Input.GetKeyDown(KeyCode.Escape))
             {
                 StateManager.ChangeTo(StatesEnum.Paused);
