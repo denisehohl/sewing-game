@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using Ateo.Common;
 using UnityEngine;
@@ -29,8 +30,16 @@ namespace Moreno.SewingGame.Ui
         
         [SerializeField]
         private List<StepGameObjectEntry> _entries = new List<StepGameObjectEntry>();
+        [SerializeField]
+        private float _minTraveledDistanceToCompleteLineStep = 400f;
+        [SerializeField]
+        private float _minCompletedSpeedTime = 1f;
+        [SerializeField]
+        private float _minCompletedRotationTime = 1f;
         private TutorialStep _currentStep;
         private HashSet<TutorialStep> _completedSteps = new HashSet<TutorialStep>();
+        private float _followLineEnteredCachedDistance;
+        private float _completedTime = 0;
 
         protected override void OnPublish()
         {
@@ -46,17 +55,108 @@ namespace Moreno.SewingGame.Ui
             Context.OnTutorialChanged -= OnTutorialEnabled;
         }
 
-        public override void ResetStatics()
+        private void Update()
         {
-            base.ResetStatics();
-            
+            switch (_currentStep)
+            {
+                case TutorialStep.None:
+                    return;
+                case TutorialStep.Foot:
+                    if (SewingMachineController.Instance.FootDown)
+                    {
+                        TryCompleteStep(TutorialStep.Foot);
+                        StartDelayedTutorial(TutorialStep.Speed,2f);
+                    }
+                    break;
+                case TutorialStep.Speed:
+                    if (SewingMachineController.Instance.CurrentSpeed != 0)
+                    {
+                        _completedTime += Time.deltaTime;
+
+                        if (_completedTime > _minCompletedSpeedTime)
+                        {
+                            TryCompleteStep(TutorialStep.Speed);
+                            StartDelayedTutorial(TutorialStep.Drag,0.5f);
+                        }
+                    }
+                    break;
+                case TutorialStep.Drag:
+                    if (SewingMachineController.Instance.CurrentRotationSpeed != 0)
+                    {
+                        _completedTime += Time.deltaTime;
+
+                        if (_completedTime > _minCompletedRotationTime)
+                        {
+                            TryCompleteStep(TutorialStep.Drag);
+                            StartDelayedTutorial(TutorialStep.Line,0.5f);
+                        }
+                    }
+                    break;
+                case TutorialStep.Line:
+                    float currentDistance = SewingMachineController.Instance.CurrentTraveledDistance;
+                    if (currentDistance - _minTraveledDistanceToCompleteLineStep >= _followLineEnteredCachedDistance)
+                    {
+                        TryCompleteStep(TutorialStep.Line);
+                    }
+                    break;
+                    //Pin
+                    //Needle
+                    //Thread
+            }
+        }
+
+        private void OnStateEnter(TutorialStep step)
+        {
+            _completedTime = 0;
+            switch (step)
+            {
+                case TutorialStep.Pin:
+                    Pin.OnPinRemoved += OnPinRemoved;
+                    break;
+                case TutorialStep.Line:
+                    _followLineEnteredCachedDistance = SewingMachineController.Instance.CurrentTraveledDistance;
+                    break;
+                case TutorialStep.Needle:
+                    NeedleManager.OnNeedleFixed += OnNeedleFixed;
+                    break;
+                case TutorialStep.Thread:
+                    NeedleManager.OnThreadingCompleted += OnThreadingCompleted;
+                    break;
+            }
+        }
+
+        private void OnStateExit(TutorialStep step)
+        {
+            switch (step)
+            {
+                case TutorialStep.Pin:
+                    Pin.OnPinRemoved -= OnPinRemoved;
+                    break;
+                case TutorialStep.Line:
+                    break;
+                case TutorialStep.Needle:
+                    NeedleManager.OnNeedleFixed -= OnNeedleFixed;
+                    break;
+                case TutorialStep.Thread:
+                    NeedleManager.OnThreadingCompleted -= OnThreadingCompleted;
+                    break;
+            }
         }
 
         private void OnTutorialEnabled(bool tutorialActive)
         {
+            if (!tutorialActive)
+            {
+                DisplayTutorialStep(TutorialStep.None);
+                NeedleManager.OnThreadingStarted -= OnThreadingStarted;
+                NeedleManager.OnNeedleBroken -= OnNeedleBroken;
+                return;
+            }
             DisplayTutorialStep(TutorialStep.Foot);
+            NeedleManager.OnThreadingStarted += OnThreadingStarted;
+            NeedleManager.OnNeedleBroken += OnNeedleBroken;
         }
-        
+
         public static void DisplayTutorial(TutorialStep step)
         {
             if(Instance == null) return;
@@ -66,10 +166,28 @@ namespace Moreno.SewingGame.Ui
 
         public void DisplayTutorialStep(TutorialStep step)
         {
+            if(_completedSteps.Contains(step))return;
+            if(_currentStep == step) return;
+            var previous = _currentStep;
             _currentStep = step;
+            OnStateExit(previous);
+            OnStateEnter(step);
+            
             foreach (StepGameObjectEntry entry in _entries)
             {
                 entry.GameObject.SetActive(entry.Step == step);
+            }
+        }
+
+        private void StartDelayedTutorial(TutorialStep step, float delay)
+        {
+            StartCoroutine(Routine());
+            return;
+            
+            IEnumerator Routine()
+            {
+                yield return new WaitForSeconds(delay);
+                DisplayTutorialStep(step);
             }
         }
 
@@ -80,6 +198,31 @@ namespace Moreno.SewingGame.Ui
                 _completedSteps.Add(step);
             }
             DisplayTutorialStep(TutorialStep.None);
+        }
+        
+        private void OnPinRemoved(Pin pin)
+        {
+            TryCompleteStep(TutorialStep.Pin);
+        }
+        
+        private void OnThreadingCompleted()
+        {
+            TryCompleteStep(TutorialStep.Thread);
+        }
+
+        private void OnNeedleFixed()
+        {
+            TryCompleteStep(TutorialStep.Needle);
+        }
+        
+        private void OnThreadingStarted()
+        {
+            DisplayTutorialStep(TutorialStep.Thread);
+        }
+
+        private void OnNeedleBroken()
+        {
+            DisplayTutorialStep(TutorialStep.Needle);
         }
         
     }

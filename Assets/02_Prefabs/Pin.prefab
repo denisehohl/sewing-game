@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 717762981272290841}
   m_Layer: 7
   m_Name: Positive Collider
-  m_TagString: Untagged
+  m_TagString: Pin
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -261,7 +261,7 @@ GameObject:
   - component: {fileID: 624855702582622609}
   m_Layer: 9
   m_Name: Damageable
-  m_TagString: Untagged
+  m_TagString: Pin
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -326,7 +326,7 @@ GameObject:
   - component: {fileID: 7939473974094978971}
   m_Layer: 7
   m_Name: Negative Collider
-  m_TagString: Untagged
+  m_TagString: Pin
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
