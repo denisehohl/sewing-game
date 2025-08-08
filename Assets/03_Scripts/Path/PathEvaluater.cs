@@ -102,14 +102,16 @@ namespace Moreno.SewingGame.Path
 			_accumulatedDistanceOffset += distance;
 		}
 
-		public bool TryGetWorldPositionFromPathDistance(float distance, out Vector3 worldPoint)
+		public bool TryGetWorldPositionFromPathDistance(float distance, out Vector3 worldPoint, out Vector3 pathDirection)
 		{
-			if (_currentPath.TryGetPointAtDistance(distance, out var pathPoint))
+			if (_currentPath.TryGetPointAtDistance(distance, out var pathPoint, out Vector2 direction))
 			{
 				worldPoint = TranslatePathPointToWorldPosition(pathPoint);
+				pathDirection = new Vector3(direction.y, 0, direction.x);
 				return true;
 			}
 			worldPoint = Vector3.zero;
+			pathDirection = Vector3.zero;
 			return false;
 		}
 
@@ -140,6 +142,7 @@ namespace Moreno.SewingGame.Path
 			return _pathVisualizer.transform.TransformPoint(pathPoint);
 		}
 
+		[Button]
 		private void UpdatePathVisual(PathData data)
 		{
 			_pathVisualizer.gameObject.SetActive(data != null);

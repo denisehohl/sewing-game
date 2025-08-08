@@ -10,8 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1ef927c3ec494a3baf17399d5b8df209, type: 3}
-  m_Name: Level X
+  m_Name: X Citiy Cruise Level
   m_EditorClassIdentifier: 
+  _isTutorial: 0
   _machineDirectionRange: 0
   _machineDirectionChangeRange: 0
   _pathData: {fileID: 11400000, guid: 740c9823c6b3a194597a66168fdda678, type: 2}
@@ -44,3 +45,6 @@ MonoBehaviour:
   _canPinsFlip: 1
   _pinRandomRotationRange: 60
   _lineWidth: 5
+  _threadingRandomRange: {x: 0.1, y: 0.78}
+  _threadingSmoothTime: 0.2
+  _threadingMaxSmoothSpeed: 3.58

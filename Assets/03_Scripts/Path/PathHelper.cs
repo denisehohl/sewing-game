@@ -72,15 +72,16 @@ namespace Moreno.SewingGame.Path
 			}
 		}
 		
-		public static bool TryGetPointAtDistance(this PathData path, double distance, out Vector2 point) => 
-			TryGetPointAtDistance(path, distance, out point, out int start, out int end, out float t);
+		public static bool TryGetPointAtDistance(this PathData path, double distance, out Vector2 point, out Vector2 pathDirection) => 
+			TryGetPointAtDistance(path, distance, out point, out int start, out int end, out float t, out pathDirection);
 		
-		public static bool TryGetPointAtDistance(this PathData path, double distance, out Vector2 point, out int start, out int end, out float t)
+		public static bool TryGetPointAtDistance(this PathData path, double distance, out Vector2 point, out int start, out int end, out float t, out Vector2 pathDirection)
 		{
 			var pointDistances = path.Distances;
 			var points = path.Points;
 			t = default;
 			point = default;
+			pathDirection = default;
 
 			int max = pointDistances.Count - 1;
 			end = 0;
@@ -114,6 +115,7 @@ namespace Moreno.SewingGame.Path
 			t = Mathf.InverseLerp(a, b, v);
 			double p = Mathf.Lerp(prevDist, nextDist, t);
 			point = Vector2.Lerp(points[start], points[end], t);
+			pathDirection = (points[end] - points[start]).normalized;
 			// Debug.Log($"{p} Lies {t*100}% between [{start}]:{prevDist} and [{end}]:{nextDist}");
 			return true;
 		}

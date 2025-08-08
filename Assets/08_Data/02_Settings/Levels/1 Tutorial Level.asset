@@ -10,11 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1ef927c3ec494a3baf17399d5b8df209, type: 3}
-  m_Name: Level 3
+  m_Name: 1 Tutorial Level
   m_EditorClassIdentifier: 
+  _isTutorial: 1
   _machineDirectionRange: 0
   _machineDirectionChangeRange: 0
-  _pathData: {fileID: 11400000, guid: cd5bd83c8ffc4fe46a824dd1307ae9b5, type: 2}
+  _pathData: {fileID: 11400000, guid: 5143394aac921784682cd6c978cf0562, type: 2}
   _accuracyScorePerDistance:
     serializedVersion: 2
     m_Curve:
@@ -40,6 +41,10 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   _spawnPins: 1
-  _pinSpawnDistanceRange: {x: 10, y: 40}
-  _canPinsFlip: 1
-  _pinRandomRotationRange: 60
+  _pinSpawnDistanceRange: {x: 40, y: 40}
+  _canPinsFlip: 0
+  _pinRandomRotationRange: 17.5
+  _lineWidth: 0.01
+  _threadingRandomRange: {x: 0.1, y: 0.78}
+  _threadingSmoothTime: 0.2
+  _threadingMaxSmoothSpeed: 3.58

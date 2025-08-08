@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 346623f042b54c78960eae0cba0a6fa6, type: 3}
-  m_Name: Level X Citiy Cruise
+  m_Name: 4 Angled Path
   m_EditorClassIdentifier: 
   _points:
   - {x: 0, y: 0}

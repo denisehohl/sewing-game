@@ -13,6 +13,7 @@ namespace Moreno.SewingGame
 
 		[SerializeField, Required]
 		private Pin _pinPrefab;
+
 		[SerializeField, Required]
 		private Transform _pinParent;
 
@@ -26,7 +27,6 @@ namespace Moreno.SewingGame
 		private List<Pin> _instances = new List<Pin>();
 		private LevelSetting _currentLevel;
 
-
 		#endregion
 
 		#region Public Methods
@@ -35,15 +35,17 @@ namespace Moreno.SewingGame
 		{
 			_currentLevel = Context.CurrentLevel;
 			RemoveAllPins();
-			if(_currentLevel == null) return;
+			if (_currentLevel == null) return;
 			if (!_currentLevel.SpawnPins) return;
 
-			for (float distance = _currentLevel.PinSpawnDistance; distance < _currentLevel.PathData.PathLength; distance += _currentLevel.PinSpawnDistance)
+			for (float distance = _currentLevel.PinSpawnDistance;
+			     distance < _currentLevel.PathData.PathLength;
+			     distance += _currentLevel.PinSpawnDistance)
 			{
 				AddPinAtPathDistance(distance);
 			}
 		}
-		
+
 		public void RemoveAllPins()
 		{
 			for (int i = _instances.Count - 1; i >= 0; i--)
@@ -54,6 +56,7 @@ namespace Moreno.SewingGame
 					Destroy(instance);
 				}
 			}
+
 			_instances.Clear();
 		}
 
@@ -63,25 +66,30 @@ namespace Moreno.SewingGame
 
 		private void AddPinAtPathDistance(float distance)
 		{
-			if (_pathEvaluater.TryGetWorldPositionFromPathDistance(distance, out var worldPosition))
+			if (_pathEvaluater.TryGetWorldPositionFromPathDistance(distance, out var worldPosition, out Vector3 pathDirection))
 			{
-				InstantiatePin(_currentLevel,worldPosition);
+				InstantiatePin(_currentLevel, worldPosition, pathDirection);
 			}
 		}
 
-		private void InstantiatePin(LevelSetting setting, Vector3 worldPosition)
+		private void InstantiatePin(LevelSetting setting, Vector3 worldPosition, Vector3 pathDirection)
 		{
 			var instance = Instantiate(_pinPrefab, _pinParent);
 			var t = instance.transform;
-			t.position = worldPosition + new Vector3(0,0.01f,0);
-			var randomYRotation = Random.Range(-1f,1f) * setting.PinRandomRotationRange;
+			t.position = worldPosition + new Vector3(0, 0.01f, 0);
+			var randomYRotation = Random.Range(-1f, 1f) * setting.PinRandomRotationRange;
 			if (setting.CanPinsFlip)
 			{
-				randomYRotation += Random.Range(0, 1) == 1 ? 0 : 180f;
+				randomYRotation += Random.Range(0, 2) == 1 ? 0 : 180f;
 			}
-			var r = Quaternion.Euler(0, randomYRotation, 0);
+
+			// Rotation towards/along the path direction. 
+			var r = Quaternion.LookRotation(pathDirection);
+			// Rotate by 90° and add the random y rotation.
+			r *= Quaternion.Euler(0, 90 + randomYRotation, 0);
+			// Apply the final rotation.
 			t.rotation = r;
-			
+
 			_instances.Add(instance);
 		}
 
@@ -90,7 +98,5 @@ namespace Moreno.SewingGame
 		#region Event Callbacks
 
 		#endregion
-
-
 	}
 }
