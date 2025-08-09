@@ -11,6 +11,8 @@ namespace Moreno.SewingGame.Ui
     public class UserInterfaceManager : ComponentPublishBehaviour<UserInterfaceManager>
     {
         [SerializeField]
+        private UIView _darkBG;
+        [SerializeField]
         private UIView _main;
         [SerializeField]
         private UIView _levelSelect;
@@ -58,15 +60,19 @@ namespace Moreno.SewingGame.Ui
                     break;
                 case StatesEnum.LevelSelect:
                     _showViews.Add(_levelSelect);
+                    _showViews.Add(_darkBG);
                     break;
                 case StatesEnum.Main:
                     _showViews.Add(_main);
+                    _showViews.Add(_darkBG);
                     break;
                 case StatesEnum.Result:
                     _showViews.Add(_result);
+                    _showViews.Add(_darkBG);
                     break;
                 case StatesEnum.Paused:
                     _showViews.Add(_pause);
+                    _showViews.Add(_darkBG);
                     break;
             }
             

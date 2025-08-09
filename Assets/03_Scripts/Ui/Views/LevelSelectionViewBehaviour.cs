@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
+using Ateo.StateManagement;
 using Ateo.UI;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Moreno.SewingGame.Ui.Views
 {
@@ -14,6 +16,8 @@ namespace Moreno.SewingGame.Ui.Views
 
         [SerializeField]
         private Transform _listParent;
+        [SerializeField]
+        private Button _backButton;
 
         private List<LevelSelectEntry> _instances = new List<LevelSelectEntry>();
 
@@ -34,12 +38,12 @@ namespace Moreno.SewingGame.Ui.Views
 
         private void SubscribeToButtons()
         {
-            
+            _backButton.onClick.AddListener(() => StateManager.ChangeTo(StatesEnum.Main));
         }
 
         private void UnsubscribeFromButtons()
         {
-            
+            _backButton.onClick.RemoveAllListeners();
         }
 
         private void Init()
