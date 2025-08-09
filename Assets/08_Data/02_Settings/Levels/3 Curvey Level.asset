@@ -14,9 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _isTutorial: 0
   _perfectAccuracyRange: 5
-  _imperfectAccuracyRange: 50
+  _imperfectAccuracyRange: 100
   _perfectDamageTaken: 0
-  _imperfectDamageTaken: 20
+  _imperfectDamageTaken: 150
   _machineDirectionRange: 0
   _machineDirectionChangeRange: 0
   _pathData: {fileID: 11400000, guid: cd5bd83c8ffc4fe46a824dd1307ae9b5, type: 2}
