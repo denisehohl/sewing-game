@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _isTutorial: 0
   _perfectAccuracyRange: 5
-  _imperfectAccuracyRange: 100
+  _imperfectAccuracyRange: 1600
   _perfectDamageTaken: 0
   _imperfectDamageTaken: 150
   _machineDirectionRange: 0
