@@ -31,6 +31,7 @@ namespace Moreno.SewingGame.Path
 		#region Properties
 
 		public float AccumulatedDistanceOffset => _accumulatedDistanceOffset;
+		public static float StaticAccuracyTrend;
 
 		public float AccuracyTrend
 		{
@@ -40,6 +41,7 @@ namespace Moreno.SewingGame.Path
 				var clamped = Mathf.Clamp(value, 0, 1f);
 				if (clamped == _accuracyTrend) return;
 				_accuracyTrend = clamped;
+				StaticAccuracyTrend = _accuracyTrend;
 				OnAccuracyChanged?.Invoke(clamped);
 			}
 		}
