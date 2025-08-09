@@ -46,6 +46,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _pathVisualizer: {fileID: 8170696568662992770}
   _playerPathVisualizer: {fileID: 4683321891739109600}
+  _endReachedRadius: 1
 --- !u!1 &499546044215276127
 GameObject:
   m_ObjectHideFlags: 0
@@ -5231,7 +5232,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  - {fileID: 2100000, guid: 01cb9b46039aba84d9c649fd181a404a, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -6682,6 +6683,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1273394215602056419}
     m_Modifications:
+    - target: {fileID: -8719454951683086028, guid: 2a75f18a92db335479580437f7818d93, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: d7a7fc1efcdcb3c439d9d538ef927c0a, type: 2}
     - target: {fileID: -8679921383154817045, guid: 2a75f18a92db335479580437f7818d93, type: 3}
       propertyPath: m_LocalScale.x
       value: 10
@@ -6738,6 +6743,10 @@ PrefabInstance:
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: ebe2a6a65a62a6843abb0b014c82d12a, type: 2}
+    - target: {fileID: -7513413194666917013, guid: 2a75f18a92db335479580437f7818d93, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: -2653651044934150266, guid: ea92d9db06fd24e498aac7da8758a863, type: 3}
     - target: {fileID: -5819324161315749349, guid: 2a75f18a92db335479580437f7818d93, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
@@ -6750,10 +6759,22 @@ PrefabInstance:
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: ebe2a6a65a62a6843abb0b014c82d12a, type: 2}
+    - target: {fileID: -3494546520865780420, guid: 2a75f18a92db335479580437f7818d93, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: d7a7fc1efcdcb3c439d9d538ef927c0a, type: 2}
+    - target: {fileID: -2028475644706439496, guid: 2a75f18a92db335479580437f7818d93, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: -9103484930961366303, guid: ea92d9db06fd24e498aac7da8758a863, type: 3}
     - target: {fileID: -1292175616369746967, guid: 2a75f18a92db335479580437f7818d93, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: ebe2a6a65a62a6843abb0b014c82d12a, type: 2}
+    - target: {fileID: -191458947236249036, guid: 2a75f18a92db335479580437f7818d93, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: d7a7fc1efcdcb3c439d9d538ef927c0a, type: 2}
     - target: {fileID: 919132149155446097, guid: 2a75f18a92db335479580437f7818d93, type: 3}
       propertyPath: m_Name
       value: SewingMachine
