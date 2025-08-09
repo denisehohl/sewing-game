@@ -26,6 +26,8 @@ namespace Moreno.SewingGame
 
 		[SerializeField, Required]
 		private List<GameObject> _objectsToDisableWhenAnimating;
+		[SerializeField, Required]
+		private List<GameObject> _objectsToDisableWhenMinigameActive;
 
 		[SerializeField, Required]
 		private CinemachineCamera _closeupCam;
@@ -122,6 +124,7 @@ namespace Moreno.SewingGame
 			_brokenNeedle.OnClicked += ()=> needleReplaced = true;
 			_closeupCam.gameObject.SetActive(true);
 			OnNeedleBroken?.Invoke();
+			SetObjectsInactiveWhileInMinigame(true);
 
 			while (!needleReplaced)
 			{
@@ -134,6 +137,7 @@ namespace Moreno.SewingGame
 
 			yield return StartThreadTask();
 			
+			SetObjectsInactiveWhileInMinigame(false);
 			_closeupCam.gameObject.SetActive(false);
 			callback?.Invoke();
 		}
@@ -182,6 +186,14 @@ namespace Moreno.SewingGame
 			foreach (GameObject obj in _objectsToDisableWhenAnimating)
 			{
 				obj.SetActive(!isAnimating);
+			}
+		}
+
+		private void SetObjectsInactiveWhileInMinigame(bool isInMinigame)
+		{
+			foreach (GameObject obj in _objectsToDisableWhenMinigameActive)
+			{
+				obj.SetActive(!isInMinigame);
 			}
 		}
 

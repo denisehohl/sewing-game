@@ -199,9 +199,9 @@ namespace Moreno.SewingGame
 		public void ResetMachine()
 		{
 			SetFootState(false);
+			_fabricRotator.rotation = Quaternion.identity;
 			_fabricParent.position = _fabricStartPosition;
 			_fabricParent.rotation = Quaternion.identity;
-			_fabricRotator.rotation = Quaternion.identity;
 			DamageManager.Instance.ResetValues();
 			_sewingTime = 0;
 			_pathEvaluator.ResetValues();

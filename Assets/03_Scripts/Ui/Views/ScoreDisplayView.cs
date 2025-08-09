@@ -17,7 +17,7 @@ namespace Moreno.SewingGame.Ui.Views
 
         private string PERCENTAGE_FORMAT = "##0.#";
 
-        public void Init(LevelSetting level, LevelScore score)
+        public void Init(LevelSetting level, LevelScore score, bool withTimeText = true)
         {
             bool hasScore = score != null;
             
@@ -34,7 +34,14 @@ namespace Moreno.SewingGame.Ui.Views
             float acuracy = level.GetAccuracyPercentage(score.Inacuracy);
             float clean = level.GetCleanPercentage(score.DamageTaken);
 
-            _timeDisplay.text = $"Time: {FloatSecondsToTimeString(score.Time)}";
+            if (withTimeText)
+            {
+                _timeDisplay.text = $"Time: {FloatSecondsToTimeString(score.Time)}";
+            }
+            else
+            {
+                _timeDisplay.text = $"{FloatSecondsToTimeString(score.Time)}";
+            }
             _accuracyDisplay.text = $"Accuracy: {acuracy.ToString(PERCENTAGE_FORMAT)}%";
             _cleanlinessDisplay.text = $"Cleanliness: {clean.ToString(PERCENTAGE_FORMAT)}%";
         }

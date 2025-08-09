@@ -173,6 +173,7 @@ namespace Moreno.SewingGame.Ui
                 NeedleManager.OnNeedleBroken -= OnNeedleBroken;
                 return;
             }
+            _completedSteps.Clear();
             DisplayTutorialStep(TutorialStep.Foot);
             NeedleManager.OnThreadingStarted += OnThreadingStarted;
             NeedleManager.OnNeedleBroken += OnNeedleBroken;

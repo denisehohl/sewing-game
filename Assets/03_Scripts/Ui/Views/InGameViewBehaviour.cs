@@ -6,6 +6,8 @@ namespace Moreno.SewingGame.Ui.Views
 {
     public class InGameViewBehaviour : ViewBehaviour
     {
+        [SerializeField]
+        private ScoreDisplayView _scoreDisplayView;
         protected override void OnShowStart()
         {
             Init();
@@ -38,11 +40,13 @@ namespace Moreno.SewingGame.Ui.Views
             {
                 StateManager.ChangeTo(StatesEnum.Paused);
             }
+            
+            _scoreDisplayView.Init(Context.CurrentLevel,SewingMachineController.Instance.GatherScore(),false);
         }
 
         private void Init()
         {
-            
+            _scoreDisplayView.Init(Context.CurrentLevel,SewingMachineController.Instance.GatherScore(),false);
         }
         
         #region Event Callbacks
