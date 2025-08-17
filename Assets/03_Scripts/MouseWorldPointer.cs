@@ -95,7 +95,6 @@ namespace Moreno.SewingGame
 			if (!_mousePressed) return 0;
 			var delta = DeltaPosition;
 			var dot = Vector3.Dot(delta.normalized, Vector3.left) * delta.magnitude;
-			Debug.DrawRay(_currentPosition,delta,Color.aquamarine,0.1f,false);
 			return dot;
 		}
 
