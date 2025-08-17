@@ -7256,7 +7256,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 5733417544815978906}
         m_TargetAssemblyTypeName: 
-        m_MethodName: MoveNeedleToOutPoint
+        m_MethodName: MoveNeedleToNextExtreme
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

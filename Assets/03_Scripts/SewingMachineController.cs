@@ -117,7 +117,10 @@ namespace Moreno.SewingGame
 		private float _previousNormalizedNeedleAnimationTime;
 		private bool _broken = false;
 		private float _lastNeedleStitchTime;
+		private float _needleAnimationVelicoty;
+		private int _needleAnimationDirection;
 		private Vector3 _fabricStartPosition;
+		private Coroutine _needleAnimationRoutine;
 		
 		private List<KeyCode> _possiblePowerKeys = new List<KeyCode>() {KeyCode.Q, KeyCode.W, KeyCode.E};
 
@@ -140,6 +143,7 @@ namespace Moreno.SewingGame
 		}
 
 		public bool FootDown => _footDown;
+		public bool NeedleDown => _previousNormalizedNeedleAnimationTime < 0.4f;
 
 		public float CurrentRotationSpeed => _currentRotationSpeed;
 
@@ -182,6 +186,7 @@ namespace Moreno.SewingGame
 			_brokenParticleSystem.Play(true);
 			_pathEvaluator.AccuracyTrend = 0;
 			_needleManager.SetNeedleBrokenVisual(true);
+			MoveNeedleToInPoint();
 			RuntimeManager.PlayOneShot(_MachineBrokenEvent);
 			DamageManager.Instance.AddDamageWithoutNotify(10);
 			
@@ -198,6 +203,8 @@ namespace Moreno.SewingGame
 
 		public void ResetMachine()
 		{
+			StopAllCoroutines();
+			_needleAnimationRoutine = null;
 			SetFootState(false);
 			_fabricRotator.rotation = Quaternion.identity;
 			_fabricParent.position = _fabricStartPosition;
@@ -207,6 +214,8 @@ namespace Moreno.SewingGame
 			_pathEvaluator.ResetValues();
 			_pinManager.RemoveAllPins();
 			_needleManager.SetNeedleBrokenVisual(false);
+			_broken = false;
+			_brokenParticleSystem.Stop(true,stopBehavior: ParticleSystemStopBehavior.StopEmitting);
 		}
 
 		public void StopMachine()
@@ -219,21 +228,41 @@ namespace Moreno.SewingGame
 			EvaluateCurrentSpeed(value > 0);
 			UpdateAudioSpeed();
 		}
-		
-		public void MoveNeedleToOutPoint()
+
+		public void MoveNeedleToOutPoint() => MoveNeedleToPoint(0.99f, true);
+		public void MoveNeedleToInPoint() => MoveNeedleToPoint(0.01f, true);
+		public void MoveNeedleToNextExtreme()
 		{
-			StartCoroutine(Routine());
+			float targetValue = _needleAnimationDirection > 0 ? 0.99f : 0.01f;
+			MoveNeedleToPoint(targetValue);
+		}
+		
+		public void MoveNeedleToPoint(float normalizedPoint, bool forced = false)
+		{
+			if (_needleAnimationRoutine != null)
+			{
+				StopCoroutine(_needleAnimationRoutine);
+			}
+			_needleAnimationRoutine = StartCoroutine(Routine());
 			return;
 			
 			IEnumerator Routine()
 			{
-				while (_previousNormalizedNeedleAnimationTime < 0.99f)
+				bool needleDirectionForwards = _needleAnimationDirection > 0;
+				if (forced)
+				{
+					needleDirectionForwards = normalizedPoint > 0.5f;
+				}
+				
+				while ((needleDirectionForwards && _previousNormalizedNeedleAnimationTime < normalizedPoint) || (!needleDirectionForwards && _previousNormalizedNeedleAnimationTime > normalizedPoint))
 				{
 					_needleAnimationTime += 0.1f;
 					AnimateNeedle();
 					AnimateThreadHolder();
 					yield return null;
 				}
+
+				_needleAnimationRoutine = null;
 			}
 		}
 
@@ -316,8 +345,19 @@ namespace Moreno.SewingGame
 			UpdateAudioSpeed();
 
 			if(!MouseWorldPointer.Instance.PressedDownOnFabric) return;
+
+			if (!_footDown)
+			{
+				if (!NeedleDown)
+				{
+					MoveFabric(MouseWorldPointer.Instance.DeltaPosition);
+					return;
+				}
+			}
+			
 			float rotationDirection = MouseWorldPointer.Instance.TryDetectMouseDragDirection();
 			RotateFabric(rotationDirection);
+	
 		}
 
 		private void RotateFabric(float direction)
@@ -331,6 +371,12 @@ namespace Moreno.SewingGame
 		{
 			if (_currentKeysPressed <= 0) return;
 			_fabricParent.position += _rotationCenter.forward * (CurrentSpeed * _fabricMaxSpeed * Time.deltaTime);
+		}
+
+		private void MoveFabric(Vector3 translate)
+		{
+			translate.y = 0;
+			_fabricParent.position += translate;
 		}
 
 		private void EvaluateCurrentSpeed(bool gasDown)
@@ -350,17 +396,16 @@ namespace Moreno.SewingGame
 		private void AnimateNeedle()
 		{
 			AnimateBetweenPoints(_needleAnimationTime,_needleTransform,_needleTransformMinMaxY, out var normalized);
-			if (Mathf.Abs(_previousNormalizedNeedleAnimationTime - normalized) > 0.001f)
+			_needleAnimationVelicoty = _previousNormalizedNeedleAnimationTime - normalized;
+			if (Mathf.Abs(_needleAnimationVelicoty) > 0.001f)
 			{
+				_needleAnimationDirection = _needleAnimationVelicoty > 0f ? 1 : -1;
 				if (normalized <= 0.2f)
 				{
 					if (_needleAnimationTime - _minNeedleAnimationTimeStep > _lastNeedleStitchTime)
 					{
 						_lastNeedleStitchTime = _needleAnimationTime;
-						if (_footDown)
-						{
-							OnNeedleStitch();
-						}
+						OnNeedleStitch();
 					}
 				}
 			}
